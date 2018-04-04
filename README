@@ -1,0 +1,3 @@
+Before training:
+
+run utils/PrepareImg.py: generate the file and the correspoding result savd paths for future read.
