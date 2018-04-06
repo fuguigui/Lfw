@@ -29,19 +29,19 @@ print("Test :%d"%len(test_loader.dataset.imgs))
 for i, (batch_x, batch_y) in enumerate(train_loader):
     if(i<4):
         print(i,batch_x.size(), batch_y.size())
-        lfw.show_batch(batch_x)
+        #lfw.show_batch(batch_x)
         # show_batch(batch_y)
-        plt.axis('off')
-        plt.show()
+        #plt.axis('off')
+        #plt.show()
 
 # Build the nets
 LR = 1e-4
 LR_DECAY = 0.995
 DECAY_EVERY_N_EPOCHS = 1
 N_EPOCHS = 2
-torch.cuda.manual_seed(0)
+torch.manual_seed(0)
 
-model = FCDenseNet.FCDenseNet67(n_classes=12)
+model = FCDenseNet.FCDenseNet67(n_classes=3)
 print(model)
 model.apply(train_utils.weights_init)
 # ????? what is model.parameters()?

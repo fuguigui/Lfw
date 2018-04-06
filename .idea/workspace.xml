@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6d5dd0c6-291f-48c5-b693-48da8031c20b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/training.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model/fcn.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/test.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/train.txt" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/train.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/validation.txt" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/validation.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/PrepareImg.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/PrepareImg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/lfw.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/lfw.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/training.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -48,8 +43,8 @@
       <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="75" column="65" lean-forward="true" selection-start-line="75" selection-start-column="65" selection-end-line="75" selection-end-column="65" />
+            <state relative-caret-position="380">
+              <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -57,16 +52,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PrepareImg.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PrepareImg.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/PrepareImg.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="124">
+            <state relative-caret-position="399">
               <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README" pinned="false" current-in-tab="false">
+      <file leaf-file-name="README" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="57">
@@ -75,25 +70,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FCDenseNet.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/model/FCDenseNet.py">
+      <file leaf-file-name="training.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utils/training.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="509">
-              <caret line="106" column="28" lean-forward="true" selection-start-line="106" selection-start-column="28" selection-end-line="106" selection-end-column="28" />
+            <state relative-caret-position="19">
+              <caret line="66" selection-start-line="66" selection-end-line="66" />
               <folding>
-                <element signature="e#0#12#0" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="training.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/training.py">
+      <file leaf-file-name="fcn.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/model/fcn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="99" column="10" selection-start-line="99" selection-start-column="4" selection-end-line="99" selection-end-column="10" />
+            <state relative-caret-position="95">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#0#21#0" expanded="true" />
+                <marker date="1523004951448" expanded="true" signature="88:89" ph="..." />
               </folding>
             </state>
           </provider>
@@ -114,10 +110,11 @@
       <find>.a</find>
       <find>weights_</find>
       <find>parameters</find>
-      <find>train</find>
       <find>get_predictions</find>
       <find>round</find>
       <find>adjust</find>
+      <find>n_classes</find>
+      <find>train</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -136,8 +133,9 @@
         <option value="$PROJECT_DIR$/README" />
         <option value="$PROJECT_DIR$/utils/PrepareImg.py" />
         <option value="$PROJECT_DIR$/utils/lfw.py" />
-        <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/utils/training.py" />
+        <option value="$PROJECT_DIR$/test.py" />
+        <option value="$PROJECT_DIR$/model/fcn.py" />
       </list>
     </option>
   </component>
@@ -155,7 +153,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -166,7 +163,7 @@
             <path>
               <item name="final_proj" type="b2602c69:ProjectViewProjectNode" />
               <item name="final_proj" type="462c0819:PsiDirectoryNode" />
-              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="final_proj" type="b2602c69:ProjectViewProjectNode" />
@@ -177,6 +174,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -280,13 +278,21 @@
       <option name="presentableId" value="Default" />
       <updated>1522340485076</updated>
     </task>
+    <task id="LOCAL-00001" summary="The first vision of network model.">
+      <created>1522911528942</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1522911528943</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1297" height="672" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24555984" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24555984" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" id="R Packages" order="3" />
       <window_info anchor="right" id="R Graphics" order="3" />
@@ -299,16 +305,20 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39928058" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="The first vision of network model." />
+    <option name="LAST_COMMIT_MESSAGE" value="The first vision of network model." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -318,6 +328,11 @@
           <line>35</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/utils/training.py</url>
+          <line>71</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -326,10 +341,74 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="5" />
+      <option name="time" value="7" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/model/layers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1558">
+          <caret line="83" column="30" selection-start-line="83" selection-start-column="30" selection-end-line="83" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/lfw.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="874">
+          <caret line="46" column="8" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="589">
+          <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/PrepareImg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/FCDenseNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1368">
+          <caret line="75" column="37" selection-start-line="75" selection-start-column="28" selection-end-line="75" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/training.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="988">
+          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/model/layers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1558">
@@ -489,13 +568,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/lfw.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="722">
@@ -506,20 +578,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/FCDenseNet.py">
+    <entry file="file://$PROJECT_DIR$/utils/PrepareImg.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="106" column="28" lean-forward="true" selection-start-line="106" selection-start-column="28" selection-end-line="106" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="399">
+          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="75" column="65" lean-forward="true" selection-start-line="75" selection-start-column="65" selection-end-line="75" selection-end-column="65" />
+        <state relative-caret-position="380">
+          <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -528,18 +597,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/training.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="99" column="10" selection-start-line="99" selection-start-column="4" selection-end-line="99" selection-end-column="10" />
+        <state relative-caret-position="19">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/PrepareImg.py">
+    <entry file="file://$PROJECT_DIR$/model/fcn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+        <state relative-caret-position="95">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+            <marker date="1523004951448" expanded="true" signature="88:89" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/FCDenseNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1425">
+          <caret line="75" column="37" selection-start-line="75" selection-start-column="28" selection-end-line="75" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>

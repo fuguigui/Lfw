@@ -66,8 +66,7 @@ def train(model, trn_loader, optimizer, criterion, epoch):
         targets = Variable(data[1])
 
         optimizer.zero_grad()
-        # ???? model(inputs) ok? or model.forward(inputs)?
-        output = model.forward(inputs)
+        output = model(inputs)
         loss = criterion(output, targets)
         loss.backward()
         optimizer.step()
