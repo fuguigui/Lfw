@@ -3,10 +3,11 @@ import torch
 import torch.utils.data as data
 import numpy as np
 from PIL import Image
+import scipy.misc as m
 from torchvision.datasets.folder import is_image_file, default_loader
 from torchvision import utils
 import matplotlib.pyplot as plt
-import torchvision.transforms as transforms
+import torchvision.transforms as transform
 
 
 classes = ['skin','background','hair']
@@ -36,6 +37,10 @@ class_color = [
 
 def my_loader(path):
     return Image.open(path).convert('RGB')
+
+def m_loader(path):
+    img = m.imread(path)
+    return np.array(img,dtype=np.uint8)
 
 def _make_dataset(root,txt):
     images = []
@@ -84,8 +89,8 @@ class LabelTensorToPILImage(object):
 
 class Lfw(data.Dataset):
 
-    def __init__(self, dir,txt, transform=None, target_transform=None,
-                 loader=default_loader):
+    def __init__(self, dir,txt, transform=None, target_transform=LabelToLongTensor,
+                 loader=m_loader):
         self.type = type
         self.transform = transform
         self.target_transform = target_transform
@@ -95,9 +100,21 @@ class Lfw(data.Dataset):
     def __getitem__(self, index):
         img = self.loader(self.imgs[index])
         lab = self.loader(self.labs[index])
+        print("origin img = ",img,
+              "\norigin lab =",lab)
+
+        plt.imshow(img)
+        plt.show()
+        plt.imshow(lab)
+        plt.show()
+
         if self.transform is not None:
             img = self.transform(img)
-            lab = self.transform(lab)
+
+        if self.target_transform is not None:
+            lab = self.target_transform(lab)
+        print("Transforms:\nimg = ",img,
+              "\n lab = ",lab)
         return img, lab
 
     def __len__(self):
