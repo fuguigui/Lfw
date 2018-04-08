@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import torch
 import torch.utils.data as data
 import numpy as np
@@ -7,33 +8,12 @@ import scipy.misc as m
 from torchvision.datasets.folder import is_image_file, default_loader
 from torchvision import utils
 import matplotlib.pyplot as plt
-import torchvision.transforms as transform
 
-
-classes = ['skin','background','hair']
-
-class_weight = torch.FloatTensor([
-    0.58872014284134, 0.51052379608154, 2.6966278553009,
-    0.45021694898605, 1.1785038709641, 0.77028578519821, 2.4782588481903,
-    2.5273461341858, 1.0122526884079, 3.2375309467316, 4.1312313079834, 0])
-
-mean = [0.41189489566336, 0.4251328133025, 0.4326707089857]
-std = [0.27413549931506, 0.28506257482912, 0.28284674400252]
-
-class_color = [
-    (128, 128, 128),
-    (128, 0, 0),
-    (192, 192, 128),
-    (128, 64, 128),
-    (0, 0, 192),
-    (128, 128, 0),
-    (192, 128, 128),
-    (64, 64, 128),
-    (64, 0, 128),
-    (64, 64, 0),
-    (0, 128, 192),
-    (0, 0, 0),
-]
+Bkg = [0,0,255]
+Hair = [255, 0, 0]
+Skin = [0, 255, 0]
+Unlbl = [0, 0, 0]
+classes = np.array([Bkg, Hair, Skin, Unlbl])
 
 def my_loader(path):
     return Image.open(path).convert('RGB')
@@ -41,6 +21,7 @@ def my_loader(path):
 def m_loader(path):
     img = m.imread(path)
     return np.array(img,dtype=np.uint8)
+
 
 def _make_dataset(root,txt):
     images = []
@@ -73,7 +54,7 @@ class LabelTensorToPILImage(object):
     def __call__(self, label):
         label = label.unsqueeze(0)
         colored_label = torch.zeros(3, label.size(1), label.size(2)).byte()
-        for i, color in enumerate(class_color):
+        for i, color in enumerate(classes):
             mask = label.eq(i)
             for j in range(3):
                 colored_label[j].masked_fill_(mask, color[j])
@@ -89,39 +70,67 @@ class LabelTensorToPILImage(object):
 
 class Lfw(data.Dataset):
 
-    def __init__(self, dir,txt, transform=None, target_transform=LabelToLongTensor,
-                 loader=m_loader):
+    def __init__(self, dir,txt, is_transform = True,
+                 if_encode=False,
+                 loader=m_loader, n_classes = 3):
         self.type = type
-        self.transform = transform
-        self.target_transform = target_transform
+        self.n_classes = n_classes
+        self.is_transform = is_transform
         self.loader = loader
         self.imgs, self.labs = _make_dataset(dir,txt)
+        self.height = 250
+        self.weight = 250
+        self.if_encode = if_encode
 
     def __getitem__(self, index):
         img = self.loader(self.imgs[index])
         lab = self.loader(self.labs[index])
-        print("origin img = ",img,
-              "\norigin lab =",lab)
+        #print("origin img = ",img,
+         #     "\norigin lab =",lab)
 
-        plt.imshow(img)
-        plt.show()
-        plt.imshow(lab)
-        plt.show()
+        #plt.imshow(img)
+        #plt.show()
+        #plt.imshow(lab)
+        #plt.show()
 
-        if self.transform is not None:
-            img = self.transform(img)
+        if self.if_encode:
+            lab = encode_segmap(lab, self.height, self.weight)
 
-        if self.target_transform is not None:
-            lab = self.target_transform(lab)
-        print("Transforms:\nimg = ",img,
-              "\n lab = ",lab)
+        if self.is_transform:
+            img, lab = self.transform(img, lab)
+
+        #print("Transforms:\nimg = ",img,
+         #     "\n lab = ",lab)
         return img, lab
 
     def __len__(self):
         return len(self.imgs)
 
+    def transform(self, img, lbl):
+        img = img[:, :, ::-1]
+        img = img.astype(np.float64)
+        # img -= self.mean
+        img = img.astype(float) / 255.0
+        img = img.transpose(2, 0, 1)
+
+        img = torch.from_numpy(img).float()
+        lbl = torch.from_numpy(lbl).long()
+        return img, lbl
+
+def encode_segmap(lab, x, y):
+    new_lab = np.zeros((x, y,1))
+    for h in range(x):
+        for w in range(y):
+            for i, color in enumerate(classes):
+                if lab[h][w][0] == color[0] and lab[h][w][1] == color[1] and lab[h][w][2] == color[2]:
+                    new_lab[h][w][0] = i
+                    break
+    return new_lab
+def decode_segmap(lab):
+    return lab
 
 def show_batch(imgs):
     grid = utils.make_grid(imgs)
     plt.imshow(grid.numpy().transpose((1,2,0)))
     plt.title("Batch from dataloader")
+

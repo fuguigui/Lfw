@@ -13,11 +13,9 @@ import utils.training as train_utils
 
 # load the datasets
 print("Loading the data......")
-train_dt = lfw.Lfw("./datasets/","train.txt",
-                   transform=transforms.ToTensor(),
-                   target_transform=transforms.ToTensor())
-valid_dt = lfw.Lfw("./datasets/","validation.txt", transform=transforms.ToTensor(), loader=lfw.my_loader)
-test_dt = lfw.Lfw("./datasets/","test.txt", transform=transforms.ToTensor(), loader=lfw.my_loader)
+train_dt = lfw.Lfw("./datasets/","train.txt")
+#valid_dt = lfw.Lfw("./datasets/","validation.txt", transform=transforms.ToTensor(), loader=lfw.my_loader)
+#test_dt = lfw.Lfw("./datasets/","test.txt", transform=transforms.ToTensor(), loader=lfw.my_loader)
 
 
 # batch the datasets
@@ -34,6 +32,8 @@ print("Train:%d"%len(train_loader.dataset.imgs))
 for i, (batch_x, batch_y) in enumerate(train_loader):
     if(i<4):
         print(i,batch_x.size(), batch_y.size())
+    else:
+        break
         #lfw.show_batch(batch_x)
         # show_batch(batch_y)
         #plt.axis('off')
