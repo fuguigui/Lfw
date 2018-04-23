@@ -22,6 +22,17 @@ def m_loader(path):
     img = m.imread(path)
     return np.array(img,dtype=np.uint8)
 
+def transform(img, lbl):
+    img = img[:, :, ::-1]
+    img = img.astype(float) / 255.0
+    img = img.transpose(2, 0, 1)
+    img = torch.from_numpy(img).float()
+
+    lbl = lbl.astype(float) / 255.0
+    lbl = lbl.transpose(2, 0, 1)
+    lbl = torch.from_numpy(lbl).int()
+    return img, lbl
+
 
 def _make_dataset(root,txt):
     images = []
@@ -70,8 +81,7 @@ class LabelTensorToPILImage(object):
 
 class Lfw(data.Dataset):
 
-    def __init__(self, dir,txt, is_transform = True,
-                 if_encode=False,
+    def __init__(self, dir,txt, transform,
                  loader=m_loader, n_classes = 3):
         self.type = type
         self.n_classes = n_classes
@@ -106,16 +116,7 @@ class Lfw(data.Dataset):
     def __len__(self):
         return len(self.imgs)
 
-    def transform(self, img, lbl):
-        img = img[:, :, ::-1]
-        img = img.astype(np.float64)
-        # img -= self.mean
-        img = img.astype(float) / 255.0
-        img = img.transpose(2, 0, 1)
 
-        img = torch.from_numpy(img).float()
-        lbl = torch.from_numpy(lbl).long()
-        return img, lbl
 
 def encode_segmap(lab, x, y):
     new_lab = np.zeros((x, y,1))

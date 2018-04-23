@@ -6,8 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 import time
-import numpy as np
-from model import FCDenseNet,fcn
+from model import fcn
 import utils.lfw as lfw
 import utils.training as train_utils
 

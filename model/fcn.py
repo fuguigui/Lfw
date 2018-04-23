@@ -59,10 +59,6 @@ class fcn32s(nn.Module):
             nn.Conv2d(4096,self.n_classes,1),
         )
 
-        # TODO: Add support for learned upsampling
-        if self.learned_bilinear:
-            raise NotImplementedError
-
     def forward(self,x):
         conv1 = self.conv_block1(x)
         conv2 = self.conv_block2(conv1)
