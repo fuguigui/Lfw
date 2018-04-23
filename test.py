@@ -16,6 +16,8 @@ print("Loading the data......")
 train_dt = lfw.Lfw("./datasets/","train.txt")
 #valid_dt = lfw.Lfw("./datasets/","validation.txt", transform=transforms.ToTensor(), loader=lfw.my_loader)
 #test_dt = lfw.Lfw("./datasets/","test.txt", transform=transforms.ToTensor(), loader=lfw.my_loader)
+valid_dt = lfw.Lfw("./datasets/","validation.txt")
+test_dt = lfw.Lfw("./datasets/","test.txt")
 
 
 # batch the datasets
@@ -23,9 +25,9 @@ print("Batching the datasets......")
 batch_size = 2
 train_loader = torch.utils.data.DataLoader(train_dt, batch_size=batch_size, shuffle=False)
 print("Train:%d"%len(train_loader.dataset.imgs))
-#valid_loader = torch.utils.data.DataLoader(valid_dt, batch_size=batch_size, shuffle=False)
+valid_loader = torch.utils.data.DataLoader(valid_dt, batch_size=batch_size, shuffle=False)
 #print("Valid:%d"%len(valid_loader.dataset.imgs))
-#test_loader = torch.utils.data.DataLoader(test_dt, batch_size=batch_size, shuffle=False)
+test_loader = torch.utils.data.DataLoader(test_dt, batch_size=batch_size, shuffle=False)
 #print("Test :%d"%len(test_loader.dataset.imgs))
 
 
