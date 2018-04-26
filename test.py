@@ -12,11 +12,9 @@ import utils.training as train_utils
 
 # load the datasets
 print("Loading the data......")
-train_dt = lfw.Lfw("./datasets/","train.txt")
-#valid_dt = lfw.Lfw("./datasets/","validation.txt", transform=transforms.ToTensor(), loader=lfw.my_loader)
-#test_dt = lfw.Lfw("./datasets/","test.txt", transform=transforms.ToTensor(), loader=lfw.my_loader)
-valid_dt = lfw.Lfw("./datasets/","validation.txt")
-test_dt = lfw.Lfw("./datasets/","test.txt")
+train_dt = lfw.Lfw("./datasets/","train.txt",'/home/guigui/final_proj')
+valid_dt = lfw.Lfw("./datasets/","validation.txt",'/home/guigui/final_proj')
+test_dt = lfw.Lfw("./datasets/","test.txt",'/home/guigui/final_proj')
 
 
 # batch the datasets
@@ -35,10 +33,7 @@ for i, (batch_x, batch_y) in enumerate(train_loader):
         print(i,batch_x.size(), batch_y.size())
     else:
         break
-        #lfw.show_batch(batch_x)
-        # show_batch(batch_y)
-        #plt.axis('off')
-        #plt.show()
+
 
 # Build the nets
 print("Building the nets...")
@@ -48,11 +43,8 @@ DECAY_EVERY_N_EPOCHS = 1
 N_EPOCHS = 2
 torch.manual_seed(0)
 
-
-
-# model = FCDenseNet.FCDenseNet67(n_classes=3)
 fcn_model = fcn.fcn32s(n_classes=3)
-print(fcn_model)
+#print(fcn_model)
 fcn_model.apply(train_utils.weights_init)
 # ????? what is model.parameters()?
 print(fcn_model.parameters())
@@ -65,22 +57,22 @@ for epoch in range(1, N_EPOCHS + 1):
 
     ### Train ###
     trn_loss, trn_err = train_utils.train(
-        fcn_model, train_loader, optimizer, criterion, epoch)
+        fcn_model, train_loader, optimizer, criterion)
     print('Epoch {:d}\nTrain - Loss: {:.4f}, Acc: {:.4f}'.format(
         epoch, trn_loss, 1 - trn_err))
     time_elapsed = time.time() - since
     print('Train Time {:.0f}m {:.0f}s'.format(
         time_elapsed // 60, time_elapsed % 60))
 
-    ### Test ###
-    test_loss, test_err = train_utils.test(fcn_model, test_loader, criterion, epoch)
-    print('Test - Loss: {:.4f} | Acc: {:.4f}'.format(test_loss, 1 - test_err))
+    ### Valid ###
+    valid_loss, valid_err = train_utils.test(fcn_model, valid_loader, criterion, epoch)
+    print('Valid - Loss: {:.4f} | Acc: {:.4f}'.format(valid_loss, 1 - valid_err))
     time_elapsed = time.time() - since
     print('Total Time {:.0f}m {:.0f}s\n'.format(
         time_elapsed // 60, time_elapsed % 60))
 
     ### Checkpoint ###
-    train_utils.save_weights(fcn_model, epoch, test_loss, test_err)
+    train_utils.save_weights(fcn_model, epoch, valid_loss, valid_err)
 
     ### Adjust Lr ###
     train_utils.adjust_learning_rate(LR, LR_DECAY, optimizer,
