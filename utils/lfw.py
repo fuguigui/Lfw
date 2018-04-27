@@ -18,7 +18,7 @@ def transform(img, lbl):
 
     lbl = lbl.astype(float) / 255.0
     lbl = lbl.transpose(2, 0, 1)
-    lbl = torch.from_numpy(lbl).long()
+    lbl = torch.from_numpy(lbl).float()
     return img, lbl
 
 

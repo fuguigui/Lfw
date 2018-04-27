@@ -49,7 +49,7 @@ fcn_model.apply(train_utils.weights_init)
 # ????? what is model.parameters()?
 print(fcn_model.parameters())
 optimizer = optim.RMSprop(fcn_model.parameters(), lr=LR, weight_decay=1e-4)
-criterion = nn.CrossEntropyLoss()
+criterion = nn.MSELoss()
 
 # Train the model
 for epoch in range(1, N_EPOCHS + 1):
