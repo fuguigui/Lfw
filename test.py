@@ -51,7 +51,7 @@ for epoch in range(1, N_EPOCHS + 1):
     since = time.time()
 
     ### Train ###
-    trn_loss, trn_err = train_utils.train(
+    output, trn_loss, trn_err = train_utils.train(
         fcn_model, train_loader, optimizer, criterion)
     print('Epoch {:d}\nTrain - Loss: {:.4f}, Acc: {:.4f}'.format(
         epoch, trn_loss, 1 - trn_err))
@@ -72,6 +72,7 @@ for epoch in range(1, N_EPOCHS + 1):
             valid_loss_best = valid_loss
             valid_err_best = valid_err
             train_utils.save_weights(fcn_model, epoch, valid_loss, valid_err)
+            train_utils.save_results(output, epoch, valid_loss, valid_err)
     else:
         valid_loss_best = valid_loss
         valid_err_best = valid_err

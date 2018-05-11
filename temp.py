@@ -1,13 +1,13 @@
 import torch
 import torch.utils.data as data
 from torch.autograd import Variable
-from utils.training import get_predictions
+import utils.training as train_utils
 
 import utils.lfw as lfw
 
 # load the datasets
 print("Loading the data......")
-train_dt = lfw.Lfw("./datasets/","train.txt",'/home/guigui/final_proj')
+train_dt = lfw.Lfw("./datasets/","train_expr.txt",'/home/guigui/final_proj')
 
 # batch the datasets
 print("Batching the datasets......")
@@ -18,4 +18,5 @@ print("Train:%d"%len(train_loader.dataset.imgs))
 for idx, data in enumerate(train_loader):
     inputs = Variable(data[0])
     targets = Variable(data[1])
-    right = get_predictions(targets)
+    train_utils.save_results(targets, 1, 0.9,0.9)
+

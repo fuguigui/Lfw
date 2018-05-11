@@ -45,6 +45,15 @@ def get_predictions(output_batch):
     indices = indices.view(bs,h,w)
     return indices
 
+def save_results(output, epoch ,loss, err):
+    results_folder = 'results-%d-%.3f-%.3f' % (epoch, loss, err)
+    results_fpath = os.path.join(RESULTS_PATH, results_folder)
+    for idx, item in enumerate(output):
+        img_utils.save_output(results_fpath,idx, item)
+
+    print("Prediction results are saved!")
+
+
 def error(preds, targets):
     assert preds.size() == targets.size()
     bs,h,w = preds.size()
@@ -78,7 +87,7 @@ def train(model, trn_loader, optimizer, criterion):
 
     trn_loss /= len(trn_loader)
     trn_error /= len(trn_loader)
-    return trn_loss, trn_error
+    return output, trn_loss, trn_error
 
 def test(model, test_loader, criterion, epoch=1):
     model.eval()

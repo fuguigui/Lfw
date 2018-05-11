@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.utils.data as data
 import numpy as np
@@ -9,6 +10,14 @@ import matplotlib.pyplot as plt
 def m_loader(path):
     img = m.imread(path)
     return np.array(img,dtype=np.uint8)
+def save_output(path, idx, img):
+    out = img.data.numpy()
+    out = out.transpose(1,2,0)*255
+    out = out.astype(np.uint8)
+    fname = str(idx)+".png"
+    if not os.path.exists(path):
+        os.mkdir(path)
+    m.imsave(os.path.join(path,fname), out)
 
 def transform(img, lbl):
     img = img[:, :, ::-1]
