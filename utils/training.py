@@ -14,8 +14,8 @@ import torch.nn.functional as F
 
 import utils.lfw as img_utils
 
-RESULTS_PATH = '.results/'
-WEIGHTS_PATH = '.weights/'
+RESULTS_PATH = './results/'
+WEIGHTS_PATH = './weights/'
 
 
 def save_weights(model, epoch, loss, err):
