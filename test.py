@@ -67,8 +67,8 @@ for epoch in range(1, N_EPOCHS + 1):
         time_elapsed // 60, time_elapsed % 60))
 
     ### Checkpoint ###
-    if valid_loss_best != 0:
-        if valid_loss<valid_loss_best &valid_err<valid_err_best:
+    if valid_loss_best > 0:
+        if valid_loss < valid_loss_best and valid_err < valid_err_best:
             valid_loss_best = valid_loss
             valid_err_best = valid_err
             train_utils.save_weights(fcn_model, epoch, valid_loss, valid_err)
