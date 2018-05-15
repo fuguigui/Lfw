@@ -19,7 +19,7 @@ test_dt = lfw.Lfw("./datasets/","test.txt",'/home/guigui/final_proj')
 
 # batch the datasets
 print("Batching the datasets......")
-batch_size = 2
+batch_size = 32
 train_loader = torch.utils.data.DataLoader(train_dt, batch_size=batch_size, shuffle=False)
 print("Train:%d"%len(train_loader.dataset.imgs))
 valid_loader = torch.utils.data.DataLoader(valid_dt, batch_size=batch_size, shuffle=False)
@@ -33,7 +33,8 @@ print("Building the nets...")
 LR = 1e-4
 LR_DECAY = 0.995
 DECAY_EVERY_N_EPOCHS = 1
-N_EPOCHS = 2
+N_EPOCHS = 8
+COMPREES_RATE = 0.8
 torch.manual_seed(0)
 valid_loss_best = 0
 valid_err_best = 0
@@ -41,7 +42,13 @@ valid_err_best = 0
 fcn_model = fcn.fcn32s(n_classes=3)
 print(fcn_model)
 fcn_model.apply(train_utils.weights_init)
-# ????? what is model.parameters()?
+
+params = fcn_model.state_dict()
+for k,v in params.items():
+    print(k)
+    print(params['conv1.weight'])
+    print(params['conv1.bias'])
+
 print(fcn_model.parameters())
 optimizer = optim.RMSprop(fcn_model.parameters(), lr=LR, weight_decay=1e-4)
 criterion = nn.MSELoss()

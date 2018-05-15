@@ -36,7 +36,7 @@ def load_weights(model, fpath):
     model.load_state_dict(weights['state_dict'])
     print("loaded weights (lastEpoch {}, loss {}, error {})"
           .format(startEpoch-1, weights['loss'], weights['error']))
-    return startEpoch
+    #return startEpoch
 
 def get_predictions(output_batch):
     bs,c,h,w = output_batch.size()

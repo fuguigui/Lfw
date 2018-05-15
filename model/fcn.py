@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
+from collections import OrderedDict
 
 # FCN32s
 class fcn32s(nn.Module):
@@ -9,55 +10,61 @@ class fcn32s(nn.Module):
         self.n_classes = n_classes
 
         self.conv_block1 = nn.Sequential(
-            nn.Conv2d(3,64,3,padding=4),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(64,64,3,padding=1),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(2,stride=2,ceil_mode=True),
-        )
+            OrderedDict([
+                ("conv1",nn.Conv2d(3,64,3,padding=4)),
+                ("relu1",nn.ReLU(inplace=True)),
+                ("conv2",nn.Conv2d(64,64,3,padding=1)),
+                ("relu2",nn.ReLU(inplace=True)),
+                ("max",nn.MaxPool2d(2,stride=2,ceil_mode=True))
+            ]))
         self.conv_block2 = nn.Sequential(
-            nn.Conv2d(64, 128, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(128, 128, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(2, stride=2, ceil_mode=True),
-        )
+            OrderedDict([
+                ("conv1", nn.Conv2d(64, 128, 3, padding=1)),
+                ("relu1", nn.ReLU(inplace=True)),
+                ("conv2", nn.Conv2d(128, 128, 3, padding=1)),
+                ("relu2", nn.ReLU(inplace=True)),
+                ("max", nn.MaxPool2d(2, stride=2, ceil_mode=True))
+            ]))
+
         self.conv_block3 = nn.Sequential(
-            nn.Conv2d(128, 256, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(256, 256, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(256, 256, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(2, stride=2, ceil_mode=True),
-        )
+            OrderedDict([
+                ("conv1", nn.Conv2d(128, 256, 3, padding=1)),
+                ("relu1", nn.ReLU(inplace=True)),
+                ("conv2", nn.Conv2d(256, 256, 3, padding=1)),
+                ("relu2", nn.ReLU(inplace=True)),
+                ("conv3", nn.Conv2d(256, 256, 3, padding=1)),
+                ("relu3", nn.ReLU(inplace=True)),
+                ("max", nn.MaxPool2d(2, stride=2, ceil_mode=True))
+            ]))
         self.conv_block4 = nn.Sequential(
-            nn.Conv2d(256, 512, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(512, 512, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(512, 512, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(2, stride=2, ceil_mode=True),
-        )
+            OrderedDict([
+                ("conv1", nn.Conv2d(256, 512, 3, padding=1)),
+                ("relu1", nn.ReLU(inplace=True)),
+                ("conv2", nn.Conv2d(512, 512, 3, padding=1)),
+                ("relu2", nn.ReLU(inplace=True)),
+                ("conv3", nn.Conv2d(512, 512, 3, padding=1)),
+                ("relu3", nn.ReLU(inplace=True)),
+                ("max", nn.MaxPool2d(2, stride=2, ceil_mode=True))
+            ]))
         self.conv_block5 = nn.Sequential(
-            nn.Conv2d(512, 512, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(512, 512, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(512, 512, 3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(2, stride=2, ceil_mode=True),
-        )
+            OrderedDict([
+                ("conv1", nn.Conv2d(512, 512, 3, padding=1)),
+                ("relu1", nn.ReLU(inplace=True)),
+                ("conv2", nn.Conv2d(512, 512, 3, padding=1)),
+                ("relu2", nn.ReLU(inplace=True)),
+                ("conv3", nn.Conv2d(512, 512, 3, padding=1)),
+                ("relu3", nn.ReLU(inplace=True)),
+                ("max", nn.MaxPool2d(2, stride=2, ceil_mode=True))
+            ]))
         self.classifier = nn.Sequential(
-            nn.Conv2d(512,4096,4),
-            nn.ReLU(inplace=True),
-            nn.Dropout2d(),
-            nn.Conv2d(4096,4096,1),
-            nn.ReLU(inplace=True),
-            nn.Dropout2d(),
-            nn.Conv2d(4096,self.n_classes,1),
-        )
+            OrderedDict([
+                ("conv1", nn.Conv2d(512,4096,4, padding=1)),
+                ("relu1", nn.ReLU(inplace=True)),
+                ("drop1", nn.Dropout2d()),
+                ("conv2", nn.Conv2d(4096,4096, 1, padding=1)),
+                ("relu2", nn.ReLU(inplace=True)),
+                ("drop2", nn.Dropout2d()),
+                ("conv3", nn.Conv2d(4096,self.n_classes,1))]))
 
     def forward(self,x):
         conv1 = self.conv_block1(x)
