@@ -6,6 +6,7 @@ from collections import OrderedDict
 import numpy as np
 import torch.nn.init as init
 import torch
+from torch.autograd import Variable
 
 
 fcn_model = fcn.fcn32s(n_classes=3)
@@ -59,31 +60,21 @@ new_model = ThiNet(fcn_model)
 # print(y)
 
 # ---------------Test: ThiNet.CalculSqX:
-inputs= np.array([[[[1,0,2],[0,1,0]],
-                   [[1,0,1],[0,1,0]],
-                   [[1,0,0],[0,1,0]],
+inputs= np.array([[[[1,0,2],[0,0.6,0]],
                    [[1,1,2],[0,1,0]],
                    [[0,1,0],[1,1,1]]],
-                  [[[1,2,2],[0,1,0]],
-                   [[1,1,2],[0,1,0]],
-                   [[0,0,2],[0,1,0]],
+                  [[[0,0,2],[0,1,0]],
                    [[0,0,2],[0,1,0]],
                    [[1,0,0],[1,1,1]]],
                   [[[2,0,2],[0,1,0]],
                    [[1,0,2],[0,1,1]],
-                   [[1,0,2],[0,1,2]],
-                   [[1,0,2],[0,0,0]],
-                   [[0,0,0],[1,2,1]]],
-                  [[[1, 0, 2], [1, 1, 0]],
-                   [[1, 0, 2], [2, 1, 0]],
-                   [[1, 0, 2], [2, 1, 0]],
+                   [[1,0,2],[0,1,2]]],
+                  [[[1, 0, 2], [2, 1, 0]],
                    [[1, 0, 2], [1, 1, 0]],
                    [[0, 0, 0], [0, 1, 1]]],
                   [[[1, 0, 2], [1, 1, 0]],
                    [[1, 0, 2], [2, 1, 0]],
-                   [[1, 0, 2], [1, 1, 0]],
-                   [[1, 0, 2], [0, 0, 0]],
-                   [[0, 0, 0], [1, 2, 1]]]],dtype=np.int8)
+                   [[0, 0, 0], [1, 0.2, 1]]]])
 # set=[0]
 # def CalculSqX(inputs, set):
 #     sum = 0.0
@@ -212,8 +203,22 @@ inputs= np.array([[[[1,0,2],[0,1,0]],
 # print(next_layer.state_dict())
 # print(new_next_layer.state_dict())
 
-# Test ------ThiNet.thinmodel
+# Test ----Variable .shape
+inputs = torch.from_numpy(inputs)
+# inputs = Variable(inputs)
+# numpy_input = inputs.data.numpy()
+# print(numpy_input.shape)
 new_model.thinmodel(inputs)
+
+# Test -- nn.Conv2d
+# inputs = Variable(torch.from_numpy(inputs))
+# layer = nn.Conv2d(3,64,2,padding=1)
+# init.xavier_uniform(layer.weight, gain=1)
+# init.constant(layer.bias,0.1)
+# layer.double()
+# # output= layer(inputs)
+# output = layer.forward(inputs)
+# print(output)
 
 
 
