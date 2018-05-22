@@ -15,40 +15,6 @@ class ThiNet(object):
             self.model_name = "Direct model"
         self.time_str = time.strftime('%y-%m-%d-%H',time.localtime(time.time()))
 
-    # def prune_block(self, new_in_num, old_block, inputs):
-    #     new_block = old_block
-    #     modules = list(old_block.named_children())
-    #     lay_num = len(modules)
-    #     out_num = 0
-    #     each_input = inputs
-    #     for itr in range(lay_num-1):
-    #         cur_layer_name, cur_layer = modules[itr]
-    #         if(not isinstance(cur_layer, nn.Conv2d)):
-    #             continue
-    #
-    #         # Find the next conv2d layer in the block
-    #         middle_layers=[]
-    #         next_itr = itr+1
-    #         while(next_itr< lay_num):
-    #             next_layer_name, next_layer = modules[next_itr]
-    #             if(isinstance(next_layer,nn.Conv2d)):
-    #                 break
-    #             middle_layers.append(next_layer)
-    #             next_itr = next_itr+1
-    #         if(next_itr<lay_num):
-    #             itr = next_itr-1
-    #         else:
-    #             break
-    #
-    #         # use the current layer to get the output
-    #         each_output = cur_layer(each_input)
-    #         out_num, new_cur_layer, new_next_layer = self.prune_layer(new_in_num, cur_layer, next_layer, each_input, each_output)
-    #         new_block._modules[cur_layer_name] = new_cur_layer
-    #         new_block._modules[next_layer_name] = new_next_layer
-    #
-    #         each_input = new_cur_layer(each_input)
-    #
-    #     return out_num, new_block
 
     def prune_layer(self, new_in_num, cur, next,middle_layers, input, output):
         next_input = cur(input)
@@ -73,7 +39,7 @@ class ThiNet(object):
             output = model(input)
             loss = criterion(output, target)
             optimizer.zero_grad()
-            loss.backward()
+            loss.backward(retain_variables = True)
             optimizer.step()
         return cur_layer, next_layer
 
@@ -138,14 +104,9 @@ class ThiNet(object):
 
             each_input = new_cur_layer(each_input)
 
+        self.model = model
 
-    # def defaultblock(self):
-    #     layer= nn.Sequential(
-    #         OrderedDict(
-    #             [("conv1", nn.Conv2d(3, 9, 3, padding=2)),
-    #              ("relu1", nn.ReLU(inplace=True)),
-    #              ("max", nn.MaxPool2d(2, stride=2, ceil_mode=True))]))
-    #     return layer
+
     def filter_selection(self, channel_num, input):
         T = []
         I = list(range(channel_num))
@@ -244,6 +205,3 @@ def CalculSqX(inputs, set):
                         sub_sum +=inputs[i][j][k][l]
         sum += sub_sum*sub_sum
     return sum
-
-
-

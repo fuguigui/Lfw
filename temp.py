@@ -209,6 +209,7 @@ inputs = torch.from_numpy(inputs)
 # numpy_input = inputs.data.numpy()
 # print(numpy_input.shape)
 new_model.thinmodel(inputs)
+new_model.save_model()
 
 # Test -- nn.Conv2d
 # inputs = Variable(torch.from_numpy(inputs))
