@@ -1,8 +1,11 @@
 import torch.nn as nn
 import torch
 import time
+import os
 import torch.optim as optim
 from torch.autograd import Variable
+import utils.training as train_utils
+import random
 
 class ThiNet(object):
     def __init__(self, pretrained_model, if_file = False, compress_rate = 0.2):
@@ -16,95 +19,91 @@ class ThiNet(object):
         self.time_str = time.strftime('%y-%m-%d-%H',time.localtime(time.time()))
 
 
-    def prune_layer(self, new_in_num, cur, next,middle_layers, input, output):
-        next_input = cur(input)
+    def prune_layer(self, new_in_num, cur, next,middle_layers, next_input):
         extra_filters = self.filter_selection(next.in_channels, next_input)
         new_out_num, cur_pruned_layer,next_pruned_layer = self.drop_filter(cur, next, new_in_num, extra_filters)
-        cur_tuned_layer, next_tuned_layer = self.fine_tune(cur_pruned_layer, next_pruned_layer, middle_layers, input, output)
-        return new_out_num, cur_tuned_layer,next_tuned_layer
+        return new_out_num, cur_pruned_layer,next_pruned_layer
 
-    def fine_tune(self, cur_layer, next_layer,middle_layers, input, target):
-        # model = nn.Module()
-        target = Variable(target.data, requires_grad = False)
-        model = nn.Sequential()
-        model.add_module('cur_layer',cur_layer)
 
-        for i in range(len(middle_layers)):
-            model.add_module('middle'+str(i),middle_layers[i])
-        model.add_module('last_layer',next_layer)
+    def layerToPrune(self):
+        modules = self.model._modules
+        conv_layers=[]
+        i = 0
+        for name, module in modules.items():
+            for layer_name, layer in module._modules.items():
+                if(isinstance(layer, nn.Conv2d)):
+                    conv_layers.append(i)
+                i+=1
+        return conv_layers
 
-        optimizer = optim.RMSprop(model.parameters(), lr=1e-4, weight_decay=1e-4)
+
+
+    def thinmodel(self, train_dt):
+        train_loader = torch.utils.data.DataLoader(train_dt, batch_size=30, shuffle=False)
+
+        print("Thinning the model...")
+
+        optimizer = optim.RMSprop(self.model.parameters(), lr=1e-4, weight_decay=1e-4)
         criterion = nn.MSELoss()
-        for t in range(2):
-            output = model(input)
-            loss = criterion(output, target)
-            optimizer.zero_grad()
-            loss.backward(retain_variables = True)
-            optimizer.step()
-        return cur_layer, next_layer
+        self.trainHelper = train_utils.trainHelper(self.model, optimizer, criterion, n_epochs=1)
 
-    def thinmodel(self, inputs):
-        inputs = Variable(inputs)
-        model = self.model
-        modules = model._modules
+        for idx, data in enumerate(train_loader):
+            inputs = Variable(data[0])
+            targets = Variable(data[1])
+
+        conv_layers=self.layerToPrune()
+        modules = self.model._modules
         # Save the model's all layers
         all_layers=[]
         for name,module in modules.items():
             for layer_name, layer in module._modules.items():
                 each_layer=[name,layer_name,layer.double()]
                 all_layers.append(each_layer)
-        print(len(all_layers))
+        print("Total layers: ",len(all_layers))
 
-        layer_len = len(all_layers)
+        # prune each_layer and save the models.
         new_in = 0
-        pre = 0
-        next = 0
-        each_input = inputs
-        # Find the first layer to be pruned
-        for i in range(layer_len):
-            layer = all_layers[i][2]
-            if(isinstance(layer,nn.Conv2d)):
-                next = i
-                break
+        for i in range(len(conv_layers)-1):
+            pre=conv_layers[i]
+            next = conv_layers[i+1]
+            middle_num = next-pre-1
+            if(middle_num>0):
+                middle_layers = all_layers[pre+1:pre+middle_num]
+            else:
+                middle_layers=[]
 
-        # Begin the loop of prune_layer.
-        while(pre < layer_len):
-            pre = next
-            next = pre+1
-            middle_layers=[]
-            while (next<layer_len):
-                layer = all_layers[next][2]
-                if (isinstance(layer, nn.Conv2d)):
-                    break
-                else:
-                    middle_layers.append(all_layers[next][2])
-                    next = next+1
-            if(next > layer_len-1):
-                break
-            cur_output = all_layers[pre][2](each_input)
-            out = cur_output
+            print("Pruning the layer:", pre," The next layer: ",next)
+            since = time.time()
 
-            for l in range(next-pre-1):
-                out = all_layers[pre+1+l][2](out)
+            id_input = random.randint(0,len(train_loader))
+            input = Variable(train_loader[id_input][0])
+            next_input = input
 
-            each_output = all_layers[next][2](out)
+            for j in range(next):
+                next_input = all_layers[next][2](next_input)
 
             new_in, new_cur_layer, new_next_layer = \
                 self.prune_layer(new_in, all_layers[pre][2], all_layers[next][2],
-                                 middle_layers,each_input,each_output)
+                                 middle_layers,next_input)
+
             # Save in the current model
             cur_module_name = all_layers[pre][0]
             cur_layer_name = all_layers[pre][1]
             next_module_name = all_layers[next][0]
             next_layer_name = all_layers[next][1]
 
-            model._modules[cur_module_name]._modules[cur_layer_name] = new_cur_layer
-            model._modules[next_module_name]._modules[next_layer_name] = new_next_layer
+            self.model._modules[cur_module_name]._modules[cur_layer_name] = new_cur_layer
+            self.model._modules[next_module_name]._modules[next_layer_name] = new_next_layer
             all_layers[next][2] = new_next_layer
 
-            each_input = new_cur_layer(each_input)
+            output = self.trainHelper.train(train_loader)
+            save_file = 'ThiNet/layer_'+str(pre)+'/'
+            if (not os.path.exists('./'+save_file)):
+                os.makedirs('./'+save_file)
 
-        self.model = model
+            self.trainHelper.save_weights(path=save_file)
+            self.trainHelper.save_results(output,train_dt,savepath=save_file)
+
 
 
     def filter_selection(self, channel_num, input):
@@ -126,9 +125,6 @@ class ThiNet(object):
         return T
 
     def drop_filter(self, cur, next,cur_in_num, extra_filters):
-        if(not isinstance(cur, nn.Conv2d)):
-            print("The layer is not Conv2d!")
-            return
         cur_out_num = cur.out_channels
         if(cur_in_num == 0):
             cur_in_num = cur.in_channels
@@ -185,8 +181,6 @@ class ThiNet(object):
 
         return cur_new_out, cur_new_layer.double(), next_new_layer.double()
 
-    def save_model(self):
-        torch.save(self.model,self.time_str+self.model_name)
     def get_model(self):
         return self.model
 

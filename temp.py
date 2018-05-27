@@ -8,9 +8,9 @@ import torch.nn.init as init
 import torch
 from torch.autograd import Variable
 
-
-fcn_model = fcn.fcn32s(n_classes=3)
-new_model = ThiNet(fcn_model)
+#
+# fcn_model = fcn.fcn32s(n_classes=3)
+# new_model = ThiNet(fcn_model)
 #
 # print("original model:")
 # print(fcn_model)
@@ -208,8 +208,10 @@ inputs = torch.from_numpy(inputs)
 # inputs = Variable(inputs)
 # numpy_input = inputs.data.numpy()
 # print(numpy_input.shape)
-new_model.thinmodel(inputs)
-new_model.save_model()
+
+# # Test -- thinmodel
+# new_model.thinmodel(inputs)
+# new_model.save_model()
 
 # Test -- nn.Conv2d
 # inputs = Variable(torch.from_numpy(inputs))
@@ -221,8 +223,58 @@ new_model.save_model()
 # output = layer.forward(inputs)
 # print(output)
 
+# Test ------ calculate each_class accuracy
+def get_predictions(output_batch):
+    bs,c,h,w = output_batch.size()
+    values, indices = output_batch.cpu().max(1)
+    indices = indices.view(bs,h,w)
+    return indices
+
+def each_class_acc(preds, targets, classes):
+    bs,h,w = preds.size()
+
+    n_pixels = bs*h*w
+    preds.resize_(n_pixels)
+    targets.resize_(n_pixels)
+
+    same_list = []
+    for idx in range(n_pixels):
+        if (preds[idx] == targets[idx]):
+            same_list.append(preds[idx])
+
+    acc_class = []
+    for i in range(classes):
+        total = 0
+        for j in range(n_pixels):
+            if (preds[j] == i):
+                total+=1
+        sub = 0
+        for j in range(len(same_list)):
+            if (same_list[j] == i):
+                sub+=1
+        acc_class.append(sub / total)
+    return acc_class
 
 
+targets= np.array([[[[1,0,0],[1,0.6,0]],
+                   [[1,3,2],[0,1,0]],
+                   [[1,0,0],[1,2,1]]],
+                  [[[0,0,2],[0,1,0]],
+                   [[0,0,2],[0,1,0]],
+                   [[1,0,0],[1,2,1]]],
+                  [[[2,0,2],[0,1,0]],
+                   [[1,0,2],[0,0,1]],
+                   [[1,0,0],[0,1,2]]],
+                  [[[1, 0, 2], [2, 1, 0]],
+                   [[1, 2, 0], [1, 0.5, 0]],
+                   [[0, 0, 0], [0, 0, 1]]],
+                  [[[1, 0, 2], [1, 1, 0]],
+                   [[1, 0, 2], [2, 1, 0]],
+                   [[1, 0, 0], [2, 0.2, 1]]]])
+targets = torch.from_numpy(targets)
 
+output_pred = train_utils.get_predictions(inputs)
+target_pred = train_utils.get_predictions(targets)
 
-# Test------fine_tune
+res, acc_list = train_utils.error(output_pred, target_pred, 3)
+
