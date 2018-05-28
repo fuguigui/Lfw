@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 
 def m_loader(path):
     img = m.imread(path)
-    return np.array(img,dtype=np.uint8)
+    resize_img = np.resize(img,(256,256,3))
+    return np.array(resize_img,dtype=np.uint8)
 
 def transform(img, lbl):
     img = img[:, :, ::-1]
@@ -59,6 +60,7 @@ class Lfw(data.Dataset):
         return len(self.imgs)
 
     def save_output(self,path, idx, img):
+        out = img.resize((self.weight,self.height,3))
         out = img.data.numpy()
         out = out.transpose(1, 2, 0) * 255
         out = out.astype(np.uint8)

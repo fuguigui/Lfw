@@ -2,14 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6d5dd0c6-291f-48c5-b693-48da8031c20b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/model/mini_fcn.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_trainHelper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/parts_lfw_funneled_gt_images/valid_expr.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datasets/train_expr.txt" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/train_expr.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/ThiNet.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/ThiNet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/fcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/fcn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp.py" beforeDir="false" afterPath="$PROJECT_DIR$/temp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/mini_fcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/mini_fcn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_trainHelper.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_trainHelper.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/lfw.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/lfw.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/training.py" afterDir="false" />
     </list>
@@ -22,23 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="fcn.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/model/fcn.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="53" column="54" selection-start-line="53" selection-start-column="54" selection-end-line="53" selection-end-column="54" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="mini_fcn.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/mini_fcn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1254">
-              <caret line="68" selection-start-line="68" selection-end-line="68" />
+            <state relative-caret-position="137">
+              <caret line="56" column="52" selection-start-line="56" selection-start-column="52" selection-end-line="56" selection-end-column="52" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -49,8 +35,8 @@
       <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-23">
-              <caret line="57" column="20" lean-forward="true" selection-start-line="57" selection-start-column="20" selection-end-line="57" selection-end-column="20" />
+            <state relative-caret-position="912">
+              <caret line="58" selection-start-line="58" selection-end-line="58" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -58,23 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="temp.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/temp.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4237">
-              <caret line="231" selection-start-line="231" selection-end-line="231" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ThiNet.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ThiNet.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/ThiNet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret lean-forward="true" />
+            <state relative-caret-position="19">
+              <caret line="126" selection-start-line="126" selection-end-line="126" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -85,8 +59,8 @@
       <file leaf-file-name="training.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/training.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3050">
-              <caret line="191" column="61" selection-start-line="191" selection-start-column="61" selection-end-line="191" selection-end-column="61" />
+            <state relative-caret-position="80">
+              <caret line="118" selection-start-line="118" selection-end-line="118" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -94,11 +68,47 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="train_expr.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datasets/train_expr.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="validation.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datasets/validation.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="valid_expr.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/datasets/parts_lfw_funneled_gt_images/valid_expr.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dataloader.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/utils/data/dataloader.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3458">
+              <caret line="189" selection-start-line="189" selection-end-line="189" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="test_trainHelper.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_trainHelper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="32" column="19" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="19" />
+            <state relative-caret-position="-349">
+              <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -109,8 +119,11 @@
       <file leaf-file-name="lfw.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/lfw.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
+            <state relative-caret-position="99">
+              <caret line="17" column="32" lean-forward="true" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -126,9 +139,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>n_classes</find>
-      <find>init</find>
-      <find>weights_in</find>
       <find>train</find>
       <find>cpu</find>
       <find>transform</find>
@@ -156,6 +166,9 @@
       <find>get_pre</find>
       <find>forwa</find>
       <find>weight</find>
+      <find>id_input</find>
+      <find>weights_init</find>
+      <find>upsa</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -175,14 +188,15 @@
         <option value="$PROJECT_DIR$/utils/PrepareImg.py" />
         <option value="$PROJECT_DIR$/datasets/tran_expr.txt" />
         <option value="$PROJECT_DIR$/model/fcn.py" />
-        <option value="$PROJECT_DIR$/datasets/train_expr.txt" />
-        <option value="$PROJECT_DIR$/model/mini_fcn.py" />
         <option value="$PROJECT_DIR$/temp.py" />
         <option value="$PROJECT_DIR$/test.py" />
+        <option value="$PROJECT_DIR$/model/ThiNet.py" />
         <option value="$PROJECT_DIR$/utils/lfw.py" />
         <option value="$PROJECT_DIR$/test_trainHelper.py" />
+        <option value="$PROJECT_DIR$/model/mini_fcn.py" />
         <option value="$PROJECT_DIR$/utils/training.py" />
-        <option value="$PROJECT_DIR$/model/ThiNet.py" />
+        <option value="$PROJECT_DIR$/datasets/train_expr.txt" />
+        <option value="$PROJECT_DIR$/datasets/parts_lfw_funneled_gt_images/valid_expr.txt" />
       </list>
     </option>
   </component>
@@ -200,6 +214,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -210,13 +225,23 @@
             <path>
               <item name="final_proj" type="b2602c69:ProjectViewProjectNode" />
               <item name="final_proj" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="final_proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="final_proj" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+              <item name="parts_lfw_funneled_gt_images" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="final_proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="final_proj" type="462c0819:PsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -249,7 +274,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.test_trainHelper">
     <configuration name="PrepareImg" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="final_proj" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -322,19 +347,38 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
+    <configuration name="test_trainHelper" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="final_proj" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_trainHelper.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <list>
       <item itemvalue="Python.test" />
       <item itemvalue="Python.PrepareImg" />
       <item itemvalue="Python.lfw" />
       <item itemvalue="Python.temp" />
+      <item itemvalue="Python.test_trainHelper" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.test_trainHelper" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.temp" />
         <item itemvalue="Python.lfw" />
         <item itemvalue="Python.PrepareImg" />
-        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -447,7 +491,14 @@
       <option name="project" value="LOCAL" />
       <updated>1526978232095</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="rewrite trainHelper.">
+      <created>1527424499585</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1527424499586</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers>
       <Generic url="http://162.105.94.7">
         <password>df93df9cdf9adf9bdf98df98</password>
@@ -474,13 +525,13 @@
       <window_info anchor="right" id="R Packages" order="3" />
       <window_info anchor="right" id="R Graphics" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.30755395" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.30755395" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.47482014" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -526,25 +577,26 @@
     <MESSAGE value="Build n new object: ThiNet." />
     <MESSAGE value="Test seems to succeed? Debug is interrupted by signal 11." />
     <MESSAGE value="Debug is okay?" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debug is okay?" />
+    <MESSAGE value="rewrite trainHelper." />
+    <option name="LAST_COMMIT_MESSAGE" value="rewrite trainHelper." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/model/mini_fcn.py</url>
-          <line>64</line>
-          <option name="timeStamp" value="120" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/model/mini_fcn.py</url>
-          <line>65</line>
-          <option name="timeStamp" value="121" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/temp.py</url>
           <line>255</line>
           <option name="timeStamp" value="127" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/utils/training.py</url>
+          <line>118</line>
+          <option name="timeStamp" value="150" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/utils/training.py</url>
+          <line>75</line>
+          <option name="timeStamp" value="151" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -557,7 +609,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="133" />
+      <option name="time" value="154" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -566,20 +618,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/utils/lfw.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="874">
-          <caret line="46" column="8" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/PrepareImg.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -755,13 +793,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/utils/data/dataloader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="189" selection-start-line="189" selection-end-line="189" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/PrepareImg.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
@@ -794,13 +825,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2166">
           <caret line="117" column="61" selection-start-line="117" selection-start-column="61" selection-end-line="117" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/optim/rmsprop.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="79" selection-start-line="79" selection-end-line="79" />
         </state>
       </provider>
     </entry>
@@ -853,13 +877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/datasets/train_expr.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="145" column="122" selection-start-line="145" selection-start-column="122" selection-end-line="145" selection-end-column="122" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/nn/functional.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
@@ -877,16 +894,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/mini_fcn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1254">
-          <caret line="68" selection-start-line="68" selection-end-line="68" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/fcn.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="969">
@@ -897,37 +904,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/lfw.py">
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/optim/rmsprop.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
+        <state relative-caret-position="133">
+          <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-23">
-          <caret line="57" column="20" lean-forward="true" selection-start-line="57" selection-start-column="20" selection-end-line="57" selection-end-column="20" />
+        <state relative-caret-position="912">
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_trainHelper.py">
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/utils/data/dataloader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="32" column="19" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="3458">
+          <caret line="189" selection-start-line="189" selection-end-line="189" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/training.py">
+    <entry file="file://$PROJECT_DIR$/utils/lfw.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3050">
-          <caret line="191" column="61" selection-start-line="191" selection-start-column="61" selection-end-line="191" selection-end-column="61" />
+        <state relative-caret-position="99">
+          <caret line="17" column="32" lean-forward="true" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -936,11 +940,62 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model/ThiNet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="19">
+          <caret line="126" selection-start-line="126" selection-end-line="126" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/mini_fcn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="56" column="52" selection-start-line="56" selection-start-column="52" selection-end-line="56" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_trainHelper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-349">
+          <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/training.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="118" selection-start-line="118" selection-end-line="118" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasets/train_expr.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasets/validation.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasets/parts_lfw_funneled_gt_images/valid_expr.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>

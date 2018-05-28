@@ -47,11 +47,6 @@ class ThiNet(object):
         criterion = nn.MSELoss()
         self.trainHelper = train_utils.trainHelper(self.model, optimizer, criterion, n_epochs=1)
 
-        for idx, data in enumerate(train_loader):
-            inputs = Variable(data[0])
-            targets = Variable(data[1])
-
-        conv_layers=self.layerToPrune()
         modules = self.model._modules
         # Save the model's all layers
         all_layers=[]
@@ -60,6 +55,7 @@ class ThiNet(object):
                 each_layer=[name,layer_name,layer.double()]
                 all_layers.append(each_layer)
         print("Total layers: ",len(all_layers))
+        conv_layers=self.layerToPrune()
 
         # prune each_layer and save the models.
         new_in = 0

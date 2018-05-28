@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torch.nn.modules as M
 import torch.nn.functional as F
 from collections import OrderedDict
 
@@ -11,7 +12,7 @@ class fcn32s(nn.Module):
 
         self.conv_block1 = nn.Sequential(
             OrderedDict([
-                ("conv1",nn.Conv2d(3,64,3,padding=4)),
+                ("conv1",nn.Conv2d(3,64,3,padding=1)),
                 ("relu1",nn.ReLU(inplace=True)),
                 ("conv2",nn.Conv2d(64,64,3,padding=1)),
                 ("relu2",nn.ReLU(inplace=True)),
@@ -48,13 +49,13 @@ class fcn32s(nn.Module):
             ]))
         self.classifier = nn.Sequential(
             OrderedDict([
-                ("conv1", nn.Conv2d(512,1024,4, padding=1)),
-                ("relu1", nn.ReLU(inplace=True)),
-                ("drop1", nn.Dropout2d(inplace=True)),
-                ("conv2", nn.Conv2d(1024,1024, 1, padding=0)),
-                ("relu2", nn.ReLU(inplace=True)),
-                ("drop2", nn.Dropout2d(inplace=True)),
-                ("conv3", nn.Conv2d(1024,self.n_classes,1))]))
+                ("conv1", nn.Conv2d(512,1024,3, padding=1)),
+                ("relu1", nn.ReLU(inplace=False)),
+                ("drop1", nn.Dropout2d(inplace=False)),
+                ("conv2", nn.Conv2d(1024,1024, 3, padding=1)),
+                ("relu2", nn.ReLU(inplace=False)),
+                ("drop2", nn.Dropout2d(inplace=False)),
+                ("conv3", nn.Conv2d(1024,self.n_classes,kernel_size=3,padding=1))]))
 
     def forward(self,x):
         conv1 = self.conv_block1(x)
@@ -63,7 +64,7 @@ class fcn32s(nn.Module):
         conv4 = self.conv_block4(conv3)
 
         score = self.classifier(conv4)
-        out = F.upsample(score, x.size()[2:])
+        out = F.upsample_nearest(score, x.size()[2:])
 
         return out
 
@@ -75,7 +76,7 @@ class fcn16s(nn.Module):
         self.n_classes = n_classes
 
         self.conv_block1 = nn.Sequential(
-            nn.Conv2d(3, 64, 3, padding=4),
+            nn.Conv2d(3, 64, 3, padding=1),
             nn.ReLU(inplace=True),
             nn.Conv2d(64, 64, 3, padding=1),
             nn.ReLU(inplace=True),
@@ -107,21 +108,18 @@ class fcn16s(nn.Module):
             nn.MaxPool2d(2, stride=2, ceil_mode=True),
         )
         self.classifier = nn.Sequential(
-            nn.Conv2d(512, 1024, 4),
+            nn.Conv2d(512, 1024, 3,padding=1),
             nn.ReLU(inplace=True),
             nn.Dropout2d(),
-            nn.Conv2d(1024, 1024, 1),
+            nn.Conv2d(1024, 1024, 3, padding=1),
             nn.ReLU(inplace=True),
             nn.Dropout2d(),
-            nn.Conv2d(1024, self.n_classes, 1),
+            nn.Conv2d(1024, self.n_classes, 3,padding=1),
         )
 
 
         self.score_pool3 = nn.Conv2d(256, self.n_classes, 1)
 
-        # TODO: Add support for learned upsampling
-        if self.learned_bilinear:
-            raise NotImplementedError
 
     def forward(self, x):
         conv1 = self.conv_block1(x)
@@ -132,9 +130,9 @@ class fcn16s(nn.Module):
         score = self.classifier(conv4)
         score_pool3 = self.score_pool3(conv3)
 
-        score = F.upsample(score, score_pool3.size()[2:])
-        score += score_pool3
-        out = F.upsample(score, x.size()[2:])
+        score = F.upsample_bilinear(score, score_pool3.size()[2:])
+        score = score + score_pool3
+        out = F.upsample_bilinear(score, x.size()[2:])
 
         return out
 
@@ -204,10 +202,10 @@ class fcn8s(nn.Module):
         score_pool3 = self.score_pool3(conv3)
         score_pool2 = self.score_pool2(conv2)
 
-        score = F.upsample(score, score_pool3.size()[2:])
-        score += score_pool3
-        score = F.upsample(score, score_pool2.size()[2:])
-        score += score_pool2
-        out = F.upsample(score, x.size()[2:])
+        score = F.upsample_bilinear(score, score_pool3.size()[2:])
+        score = score + score_pool3
+        score = F.upsample_bilinear(score, score_pool2.size()[2:])
+        score = score + score_pool2
+        out = F.upsample_bilinear(score, x.size()[2:])
 
         return out

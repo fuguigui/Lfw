@@ -44,7 +44,7 @@ class trainHelper(object):
         length = len(trn_loader)
         print("In trainHelper.train: length of train loader is ", length)
 
-        for idx, data in enumerate(trn_loader):
+        for idx,data in enumerate(trn_loader):
             inputs = Variable(data[0])
             targets = Variable(data[1])
             n_classes = inputs.size()[1]
@@ -53,12 +53,13 @@ class trainHelper(object):
             self.optimizer.zero_grad()
             output = self.model(inputs)
             loss = self.criterion(output, targets)
-            loss.backward()
-            self.optimizer.step()
 
-            trn_loss += loss.data[0]
+            trn_loss = trn_loss + loss.data[0]
             pred = self.get_predictions(output)
             right = self.get_predictions(targets)
+
+            loss.backward()
+            self.optimizer.step()
             if (if_each_acc):
                 trn_err, class_acc = self.error(pred, right, n_classes)
                 trn_error += trn_err
@@ -73,7 +74,7 @@ class trainHelper(object):
         self.trn_losses.append(trn_loss)
 
         print('Epoch {:d}\nTrain - Loss: {:.4f}, Acc: {:.4f}'.format(
-            len(self.trn_errors), trn_loss, 1 - trn_err))
+            len(self.trn_errors), trn_loss, 1 - trn_error))
 
         if (if_each_acc):
             for i in range(n_classes):
@@ -84,6 +85,7 @@ class trainHelper(object):
         return output
 
     def error(self, preds, targets, classes):
+        print('In training.py: error(preds, targets, classes)...')
         assert preds.size() == targets.size()
         bs, h, w = preds.size()
         n_pixels = bs * h * w
@@ -110,10 +112,15 @@ class trainHelper(object):
             for j in range(len(same_list)):
                 if (same_list[j] == i):
                     sub += 1
-            acc_class.append(sub / total)
+            if(total==0):
+                acc_class.append(0)
+            else:
+                acc_class.append(sub / total)
         return round(err, 5), acc_class
 
     def get_predictions(self, output_batch):
+        print("In training.py: get_predictions...")
+
         bs, c, h, w = output_batch.size()
         tensor = output_batch.data
         values, indices = tensor.cpu().max(1)
@@ -133,6 +140,7 @@ class trainHelper(object):
             class_acc_list = [0]*n_classes
 
             test_loss += self.criterion(output, target).data[0]
+
             pred = self.get_predictions(output)
             right = self.get_predictions(target)
             if (if_each_class):
@@ -158,6 +166,7 @@ class trainHelper(object):
 
 
     def checkAndSave(self,output, dataset):
+        print("In training.py: checAndSave...")
         if (self.test_best>0):
             if self.test_errors[-1] < self.test_errors[self.test_best] \
                     and self.test_losses[-1] < self.test_losses[self.test_best]:

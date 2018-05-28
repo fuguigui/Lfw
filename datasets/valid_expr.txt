@@ -1,0 +1,4 @@
+../datasets/lfw_funneled/Dianne_Feinstein/Dianne_Feinstein_0002.jpg	../datasets/parts_lfw_funneled_gt_images/Dianne_Feinstein_0002.ppm
+../datasets/lfw_funneled/Leandro_Garcia/Leandro_Garcia_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Leandro_Garcia_0001.ppm
+../datasets/lfw_funneled/Gloria_Allred/Gloria_Allred_0002.jpg	../datasets/parts_lfw_funneled_gt_images/Gloria_Allred_0002.ppm
+../datasets/lfw_funneled/Charles_Grassley/Charles_Grassley_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Charles_Grassley_0001.ppm
