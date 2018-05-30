@@ -45,6 +45,8 @@ class trainHelper(object):
             output = self.model(inputs)
             loss = self.criterion(output, targets)
 
+            print('Training the {:d} loader'.format(idx))
+
             trn_loss += loss.data[0]
             pred = self.get_predictions(output)
             right = self.get_predictions(targets)
@@ -77,7 +79,6 @@ class trainHelper(object):
         return output
 
     def error(self, preds, targets, classes):
-        print('In training.py: error(preds, targets, classes)...')
         assert preds.size() == targets.size()
         bs, h, w = preds.size()
         n_pixels = bs * h * w
@@ -111,8 +112,6 @@ class trainHelper(object):
         return round(err, 5), acc_class
 
     def get_predictions(self, output_batch):
-        print("In training.py: get_predictions...")
-
         bs, c, h, w = output_batch.size()
         tensor = output_batch.data
         values, indices = tensor.cpu().max(1)
@@ -120,15 +119,17 @@ class trainHelper(object):
         return indices
 
     def test(self, test_loader, if_each_class=False, n_classes=0):
+        print('In test')
         self.model.eval()
         test_loss = 0
         test_error = 0
         class_acc_list = [0]*n_classes
 
-        for data, target in test_loader:
-            data = Variable(data, volatile=True)
-            target = Variable(target)
-            output = self.model(data)
+        for idx,data in enumerate(test_loader):
+            inputs = Variable(data[0])
+            target = Variable(data[1])
+            print('The {:d} test loader'.format(idx))
+            output = self.model(inputs)
 
             test_loss += self.criterion(output, target).data[0]
 
@@ -146,7 +147,7 @@ class trainHelper(object):
         self.test_losses.append(test_loss)
         self.test_errors.append(test_error)
 
-        print('Epoch {:d}\nTrain - Loss: {:.4f}, Acc: {:.4f}'.format(
+        print('Epoch {:d}\nTest - Loss: {:.4f}, Acc: {:.4f}'.format(
             len(self.test_losses), test_loss, 1 - test_error))
 
         if (if_each_class):

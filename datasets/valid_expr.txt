@@ -2,3 +2,11 @@
 ../datasets/lfw_funneled/Leandro_Garcia/Leandro_Garcia_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Leandro_Garcia_0001.ppm
 ../datasets/lfw_funneled/Gloria_Allred/Gloria_Allred_0002.jpg	../datasets/parts_lfw_funneled_gt_images/Gloria_Allred_0002.ppm
 ../datasets/lfw_funneled/Charles_Grassley/Charles_Grassley_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Charles_Grassley_0001.ppm
+../datasets/lfw_funneled/Edie_Falco/Edie_Falco_0002.jpg	../datasets/parts_lfw_funneled_gt_images/Edie_Falco_0002.ppm
+../datasets/lfw_funneled/Michael_Jordan/Michael_Jordan_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Michael_Jordan_0001.ppm
+../datasets/lfw_funneled/Natasa_Micic/Natasa_Micic_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Natasa_Micic_0001.ppm
+../datasets/lfw_funneled/Holly_Hunter/Holly_Hunter_0005.jpg	../datasets/parts_lfw_funneled_gt_images/Holly_Hunter_0005.ppm
+../datasets/lfw_funneled/James_Cunningham/James_Cunningham_0002.jpg	../datasets/parts_lfw_funneled_gt_images/James_Cunningham_0002.ppm
+../datasets/lfw_funneled/David_Caruso/David_Caruso_0002.jpg	../datasets/parts_lfw_funneled_gt_images/David_Caruso_0002.ppm
+../datasets/lfw_funneled/Scott_Wolf/Scott_Wolf_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Scott_Wolf_0001.ppm
+../datasets/lfw_funneled/Richard_Virenque/Richard_Virenque_0004.jpg	../datasets/parts_lfw_funneled_gt_images/Richard_Virenque_0004.ppm

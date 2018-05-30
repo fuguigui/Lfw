@@ -6,3 +6,11 @@
 ../datasets/lfw_funneled/Igor_Trunov/Igor_Trunov_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Igor_Trunov_0001.ppm
 ../datasets/lfw_funneled/Maria_Soledad_Alvear_Valenzuela/Maria_Soledad_Alvear_Valenzuela_0005.jpg	../datasets/parts_lfw_funneled_gt_images/Maria_Soledad_Alvear_Valenzuela_0005.ppm
 ../datasets/lfw_funneled/Patrick_Clawsen/Patrick_Clawsen_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Patrick_Clawsen_0001.ppm
+../datasets/lfw_funneled/Jim_Wong/Jim_Wong_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Jim_Wong_0001.ppm
+../datasets/lfw_funneled/Venus_Williams/Venus_Williams_0006.jpg	../datasets/parts_lfw_funneled_gt_images/Venus_Williams_0006.ppm
+../datasets/lfw_funneled/Carla_Myers/Carla_Myers_0002.jpg	../datasets/parts_lfw_funneled_gt_images/Carla_Myers_0002.ppm
+../datasets/lfw_funneled/Colin_Powell/Colin_Powell_0074.jpg	../datasets/parts_lfw_funneled_gt_images/Colin_Powell_0074.ppm
+../datasets/lfw_funneled/Robert_Duvall/Robert_Duvall_0003.jpg	../datasets/parts_lfw_funneled_gt_images/Robert_Duvall_0003.ppm
+../datasets/lfw_funneled/Thomas_Bjorn/Thomas_Bjorn_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Thomas_Bjorn_0001.ppm
+../datasets/lfw_funneled/Carin_Koch/Carin_Koch_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Carin_Koch_0001.ppm
+../datasets/lfw_funneled/William_Bulger/William_Bulger_0002.jpg	../datasets/parts_lfw_funneled_gt_images/William_Bulger_0002.ppm
