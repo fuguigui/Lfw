@@ -3,7 +3,12 @@ import utils.training as train_utils
 from model.ThiNet import ThiNet
 import torch.nn as nn
 from collections import OrderedDict
+from PIL import Image
+import scipy.misc as m
 import numpy as np
+import os
+import utils.lfw as lfw
+from skimage import io
 import torch.nn.init as init
 import torch
 from torch.autograd import Variable
@@ -60,21 +65,21 @@ from torch.autograd import Variable
 # print(y)
 
 # ---------------Test: ThiNet.CalculSqX:
-inputs= np.array([[[[1,0,2],[0,0.6,0]],
-                   [[1,1,2],[0,1,0]],
-                   [[0,1,0],[1,1,1]]],
-                  [[[0,0,2],[0,1,0]],
-                   [[0,0,2],[0,1,0]],
-                   [[1,0,0],[1,1,1]]],
-                  [[[2,0,2],[0,1,0]],
-                   [[1,0,2],[0,1,1]],
-                   [[1,0,2],[0,1,2]]],
-                  [[[1, 0, 2], [2, 1, 0]],
-                   [[1, 0, 2], [1, 1, 0]],
-                   [[0, 0, 0], [0, 1, 1]]],
-                  [[[1, 0, 2], [1, 1, 0]],
-                   [[1, 0, 2], [2, 1, 0]],
-                   [[0, 0, 0], [1, 0.2, 1]]]])
+# inputs= np.array([[[[1,0,2],[0,0.6,0]],
+#                    [[1,1,2],[0,1,0]],
+#                    [[0,1,0],[1,1,1]]],
+#                   [[[0,0,2],[0,1,0]],
+#                    [[0,0,2],[0,1,0]],
+#                    [[1,0,0],[1,1,1]]],
+#                   [[[2,0,2],[0,1,0]],
+#                    [[1,0,2],[0,1,1]],
+#                    [[1,0,2],[0,1,2]]],
+#                   [[[1, 0, 2], [2, 1, 0]],
+#                    [[1, 0, 2], [1, 1, 0]],
+#                    [[0, 0, 0], [0, 1, 1]]],
+#                   [[[1, 0, 2], [1, 1, 0]],
+#                    [[1, 0, 2], [2, 1, 0]],
+#                    [[0, 0, 0], [1, 0.2, 1]]]])
 # set=[0]
 # def CalculSqX(inputs, set):
 #     sum = 0.0
@@ -204,7 +209,7 @@ inputs= np.array([[[[1,0,2],[0,0.6,0]],
 # print(new_next_layer.state_dict())
 
 # Test ----Variable .shape
-inputs = torch.from_numpy(inputs)
+# inputs = torch.from_numpy(inputs)
 # inputs = Variable(inputs)
 # numpy_input = inputs.data.numpy()
 # print(numpy_input.shape)
@@ -224,57 +229,81 @@ inputs = torch.from_numpy(inputs)
 # print(output)
 
 # Test ------ calculate each_class accuracy
-def get_predictions(output_batch):
-    bs,c,h,w = output_batch.size()
-    values, indices = output_batch.cpu().max(1)
-    indices = indices.view(bs,h,w)
-    return indices
+# def get_predictions(output_batch):
+#     bs,c,h,w = output_batch.size()
+#     values, indices = output_batch.cpu().max(1)
+#     indices = indices.view(bs,h,w)
+#     return indices
+#
+# def each_class_acc(preds, targets, classes):
+#     bs,h,w = preds.size()
+#
+#     n_pixels = bs*h*w
+#     preds.resize_(n_pixels)
+#     targets.resize_(n_pixels)
+#
+#     same_list = []
+#     for idx in range(n_pixels):
+#         if (preds[idx] == targets[idx]):
+#             same_list.append(preds[idx])
+#
+#     acc_class = []
+#     for i in range(classes):
+#         total = 0
+#         for j in range(n_pixels):
+#             if (preds[j] == i):
+#                 total+=1
+#         sub = 0
+#         for j in range(len(same_list)):
+#             if (same_list[j] == i):
+#                 sub+=1
+#         acc_class.append(sub / total)
+#     return acc_class
+#
+#
+# targets= np.array([[[[1,0,0],[1,0.6,0]],
+#                    [[1,3,2],[0,1,0]],
+#                    [[1,0,0],[1,2,1]]],
+#                   [[[0,0,2],[0,1,0]],
+#                    [[0,0,2],[0,1,0]],
+#                    [[1,0,0],[1,2,1]]],
+#                   [[[2,0,2],[0,1,0]],
+#                    [[1,0,2],[0,0,1]],
+#                    [[1,0,0],[0,1,2]]],
+#                   [[[1, 0, 2], [2, 1, 0]],
+#                    [[1, 2, 0], [1, 0.5, 0]],
+#                    [[0, 0, 0], [0, 0, 1]]],
+#                   [[[1, 0, 2], [1, 1, 0]],
+#                    [[1, 0, 2], [2, 1, 0]],
+#                    [[1, 0, 0], [2, 0.2, 1]]]])
+# targets = torch.from_numpy(targets)
+#
+# output_pred = train_utils.get_predictions(inputs)
+# target_pred = train_utils.get_predictions(targets)
+#
+# res, acc_list = train_utils.error(output_pred, target_pred, 3)
 
-def each_class_acc(preds, targets, classes):
-    bs,h,w = preds.size()
 
-    n_pixels = bs*h*w
-    preds.resize_(n_pixels)
-    targets.resize_(n_pixels)
+# -----------------Test: lfw
 
-    same_list = []
-    for idx in range(n_pixels):
-        if (preds[idx] == targets[idx]):
-            same_list.append(preds[idx])
+train_dt = lfw.Lfw("./datasets/","train_expr.txt",'/home/guigui/final_proj')
 
-    acc_class = []
-    for i in range(classes):
-        total = 0
-        for j in range(n_pixels):
-            if (preds[j] == i):
-                total+=1
-        sub = 0
-        for j in range(len(same_list)):
-            if (same_list[j] == i):
-                sub+=1
-        acc_class.append(sub / total)
-    return acc_class
+aim = np.zeros((70,70,3))
+for i in range(15):
+    aim[0][i][0]=255
+img, lbl = train_dt[2]
+m.imsave('./results/img.ppm',img)
+train_dt.save_output('./results/',2,lbl)
 
+# ---------------Test: os.path.join
 
-targets= np.array([[[[1,0,0],[1,0.6,0]],
-                   [[1,3,2],[0,1,0]],
-                   [[1,0,0],[1,2,1]]],
-                  [[[0,0,2],[0,1,0]],
-                   [[0,0,2],[0,1,0]],
-                   [[1,0,0],[1,2,1]]],
-                  [[[2,0,2],[0,1,0]],
-                   [[1,0,2],[0,0,1]],
-                   [[1,0,0],[0,1,2]]],
-                  [[[1, 0, 2], [2, 1, 0]],
-                   [[1, 2, 0], [1, 0.5, 0]],
-                   [[0, 0, 0], [0, 0, 1]]],
-                  [[[1, 0, 2], [1, 1, 0]],
-                   [[1, 0, 2], [2, 1, 0]],
-                   [[1, 0, 0], [2, 0.2, 1]]]])
-targets = torch.from_numpy(targets)
-
-output_pred = train_utils.get_predictions(inputs)
-target_pred = train_utils.get_predictions(targets)
-
-res, acc_list = train_utils.error(output_pred, target_pred, 3)
-
+# RESULTS_PATH_1 = './results/'
+# savepath = 'fugr'
+# savepath2 = 'fugg/'
+# results_fpath = 'bottle'
+# RESULTS_PATH_2 = './results'
+# results_path = os.path.join(RESULTS_PATH_1, savepath, results_fpath)
+# print('The saving path is ', results_path)
+#
+# results_path2 = os.path.join(RESULTS_PATH_2, savepath2, results_fpath)
+# print('The saving path is ', results_path2)

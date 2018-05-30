@@ -1,8 +1,8 @@
-../datasets/lfw_funneled/Inga_Hall/Inga_Hall_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Inga_Hall_0001.ppm
-../datasets/lfw_funneled/Ted_Turner/Ted_Turner_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Ted_Turner_0001.ppm
-../datasets/lfw_funneled/Herb_Sendek/Herb_Sendek_0003.jpg	../datasets/parts_lfw_funneled_gt_images/Herb_Sendek_0003.ppm
-../datasets/lfw_funneled/Ernie_Harwell/Ernie_Harwell_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Ernie_Harwell_0001.ppm
-../datasets/lfw_funneled/Howard_Stringer/Howard_Stringer_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Howard_Stringer_0001.ppm
-../datasets/lfw_funneled/Cruz_Bustamante/Cruz_Bustamante_0004.jpg	../datasets/parts_lfw_funneled_gt_images/Cruz_Bustamante_0004.ppm
-../datasets/lfw_funneled/Kristin_Scott/Kristin_Scott_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Kristin_Scott_0001.ppm
-../datasets/lfw_funneled/Andy_Roddick/Andy_Roddick_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Andy_Roddick_0001.ppm
+../datasets/lfw_funneled/Robert_Schuller/Robert_Schuller_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Robert_Schuller_0001.ppm
+../datasets/lfw_funneled/Arye_Mekel/Arye_Mekel_0002.jpg	../datasets/parts_lfw_funneled_gt_images/Arye_Mekel_0002.ppm
+../datasets/lfw_funneled/Bob_Geldof/Bob_Geldof_0002.jpg	../datasets/parts_lfw_funneled_gt_images/Bob_Geldof_0002.ppm
+../datasets/lfw_funneled/Prince_Harry/Prince_Harry_0002.jpg	../datasets/parts_lfw_funneled_gt_images/Prince_Harry_0002.ppm
+../datasets/lfw_funneled/Jason_Vale/Jason_Vale_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Jason_Vale_0001.ppm
+../datasets/lfw_funneled/Igor_Trunov/Igor_Trunov_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Igor_Trunov_0001.ppm
+../datasets/lfw_funneled/Maria_Soledad_Alvear_Valenzuela/Maria_Soledad_Alvear_Valenzuela_0005.jpg	../datasets/parts_lfw_funneled_gt_images/Maria_Soledad_Alvear_Valenzuela_0005.ppm
+../datasets/lfw_funneled/Patrick_Clawsen/Patrick_Clawsen_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Patrick_Clawsen_0001.ppm
