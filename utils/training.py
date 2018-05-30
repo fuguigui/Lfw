@@ -1,6 +1,7 @@
 import os
 import shutil
 import time
+import json
 
 import torch
 import torch.nn as nn
@@ -234,6 +235,32 @@ class trainHelper(object):
 
             ### Adjust Lr ###
             self.adjust_learning_rate()
+        self.save_record(if_classes, n_classes)
+
+    def save_record(self, if_class=False, n_classes=0):
+        path = './records/'
+        if not os.path.exists(path):
+            os.mkdir(path)
+        name = os.path.join(path,self.time_stick+'_records.txt')
+        f = open(name, 'w')
+        trn_len = len(self.trn_losses)
+        print('# Train result:\n')
+        for i in range(trn_len):
+            f.write('#Rec:',i,', loss:',self.trn_losses[i],', error:',self.trn_errors[i])
+            if(if_class):
+                f.write('n_classes error: ')
+                for j in range(n_classes):
+                    f.write('class ',j,': error',self.trn_eachclass_err[i][j])
+
+        test_len = len(self.test_losses)
+        print('# Test result:\n')
+        for i in range(test_len):
+            f.write('#Rec:', i, ', loss:', self.test_losses[i], ', error:', self.test_errors[i])
+            if (if_class):
+                f.write('n_classes error: ')
+                for j in range(n_classes):
+                    f.write('class ', j, ': error', self.test_eachclass_err[i][j])
+        f.close()
 
 def weights_init(m):
     if isinstance(m, nn.Conv2d):

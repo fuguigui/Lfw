@@ -17,7 +17,7 @@ valid_dt = lfw.Lfw("./datasets/","valid_expr.txt",'/home/guigui/final_proj')
 
 # batch the datasets
 print("Batching the datasets......")
-batch_size = 32
+batch_size = 4
 train_loader = torch.utils.data.DataLoader(train_dt, batch_size=batch_size, shuffle=True)
 print("Train:%d"%len(train_loader.dataset.imgs))
 valid_loader = torch.utils.data.DataLoader(valid_dt, batch_size=batch_size, shuffle=True)
@@ -39,7 +39,7 @@ fcn_model.apply(train_utils.weights_init)
 
 optimizer = optim.RMSprop(fcn_model.parameters(), lr=LR)
 criterion = nn.MSELoss()
-train_helper = train_utils.trainHelper(fcn_model, optimizer, criterion,LR_DECAY= LR_DECAY, n_epochs=10)
+train_helper = train_utils.trainHelper(fcn_model, optimizer, criterion,LR_DECAY= LR_DECAY, n_epochs=2)
 
 print(fcn_model.parameters())
 
