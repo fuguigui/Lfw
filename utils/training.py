@@ -1,22 +1,10 @@
 import os
-import sys
-import math
-import string
-import random
 import shutil
 import time
 
 import torch
 import torch.nn as nn
-import torchvision.transforms as transforms
-from torchvision.utils import save_image
 from torch.autograd import Variable
-import torch.nn.functional as F
-
-import utils.lfw as img_utils
-
-RESULTS_PATH = './results/'
-WEIGHTS_PATH = './weights/'
 
 class trainHelper(object):
     def __init__(self, model, optimizer, criterion, learning_rate = 1e-4, LR_DECAY = 0.995, n_epochs = 10):
@@ -25,8 +13,8 @@ class trainHelper(object):
         self.optimizer = optimizer
         self.criterion = criterion
         self.n_epoch = n_epochs
-        self.RESULTS_PATH = './results/'
-        self.WEIGHTS_PATH = './weights/'
+        self.RESULTS_PATH = './results'
+        self.WEIGHTS_PATH = './weights'
         self.lr_decay = LR_DECAY
         self.trn_errors=[]
         self.trn_losses = []
@@ -35,11 +23,16 @@ class trainHelper(object):
         self.test_losses=[]
         self.test_eachclass_err=[]
         self.test_best=0
+        self.time_stick = time.strftime('%y-%m-%d-%H',time.localtime(time.time()))
 
-    def train(self, trn_loader, if_each_acc=False):
+    def getmodel(self):
+        return self.model
+
+    def train(self, trn_loader, if_each_acc=False, n_classes=0):
         self.model.train()
         trn_loss = 0
         trn_error = 0
+        class_acc_list = [0]*n_classes
 
         length = len(trn_loader)
         print("In trainHelper.train: length of train loader is ", length)
@@ -47,19 +40,18 @@ class trainHelper(object):
         for idx,data in enumerate(trn_loader):
             inputs = Variable(data[0])
             targets = Variable(data[1])
-            n_classes = inputs.size()[1]
-            class_acc_list = [0]*n_classes
 
             self.optimizer.zero_grad()
             output = self.model(inputs)
             loss = self.criterion(output, targets)
 
-            trn_loss = trn_loss + loss.data[0]
+            trn_loss += loss.data[0]
             pred = self.get_predictions(output)
             right = self.get_predictions(targets)
 
             loss.backward()
             self.optimizer.step()
+
             if (if_each_acc):
                 trn_err, class_acc = self.error(pred, right, n_classes)
                 trn_error += trn_err
@@ -127,17 +119,16 @@ class trainHelper(object):
         indices = indices.view(bs, h, w)
         return indices
 
-    def test(self, test_loader, if_each_class=False):
+    def test(self, test_loader, if_each_class=False, n_classes=0):
         self.model.eval()
         test_loss = 0
         test_error = 0
+        class_acc_list = [0]*n_classes
 
         for data, target in test_loader:
             data = Variable(data, volatile=True)
             target = Variable(target)
             output = self.model(data)
-            n_classes = output.size()[1]
-            class_acc_list = [0]*n_classes
 
             test_loss += self.criterion(output, target).data[0]
 
@@ -166,7 +157,6 @@ class trainHelper(object):
 
 
     def checkAndSave(self,output, dataset):
-        print("In training.py: checAndSave...")
         if (self.test_best>0):
             if self.test_errors[-1] < self.test_errors[self.test_best] \
                     and self.test_losses[-1] < self.test_losses[self.test_best]:
@@ -180,25 +170,28 @@ class trainHelper(object):
 
         loss = self.test_losses[self.test_best]
         err = self.test_errors[self.test_best]
+        mpath = path+self.time_stick
 
         weights_fname = 'weights-%d-%.3f-%.3f.pth' % (self.test_best, loss, err)
-        weights_fpath = os.path.join(WEIGHTS_PATH,path, weights_fname)
+        weights_fpath = os.path.join(self.WEIGHTS_PATH,mpath, weights_fname)
         torch.save({
             'startEpoch': self.test_best,
             'loss': loss,
             'error': err,
             'state_dict': self.model.state_dict()
         }, weights_fpath)
-        shutil.copyfile(weights_fpath, WEIGHTS_PATH + 'latest.th')
+        shutil.copyfile(weights_fpath, self.WEIGHTS_PATH + 'latest.th')
 
     def save_results(self, output,dt, savepath=''):
         print("Saving results...")
 
         loss = self.test_losses[self.test_best]
         err = self.test_errors[self.test_best]
+        mpath = savepath+self.time_stick
 
         results_folder = 'results-%d-%.3f-%.3f' % (self.test_best, loss, err)
-        results_fpath = os.path.join(RESULTS_PATH, savepath, results_folder)
+        results_fpath = os.path.join(self.RESULTS_PATH, mpath, results_folder)
+        print('The saving path is ',results_fpath)
         for idx, item in enumerate(output):
             dt.save_output(results_fpath, idx, item)
 
@@ -219,18 +212,18 @@ class trainHelper(object):
         for param_group in self.optimizer.param_groups:
             param_group['lr'] = new_lr
 
-    def FullExpr(self, train_loader, valid_loader, dt, if_classes=False):
+    def FullExpr(self, train_loader, valid_loader, dt, if_classes=False, n_classes=0):
         for epoch in range(1, self.n_epoch + 1):
             since = time.time()
 
             ### Train ###
-            output = self.train(train_loader, if_each_acc=if_classes)
+            output = self.train(train_loader, if_each_acc=if_classes, n_classes=n_classes)
             time_elapsed = time.time() - since
             print('Train Time {:.0f}m {:.0f}s'.format(
                 time_elapsed // 60, time_elapsed % 60))
 
             ### Valid ###
-            self.test(valid_loader, if_each_class = if_classes)
+            self.test(valid_loader, if_each_class = if_classes, n_classes=n_classes)
             time_elapsed = time.time() - since
             print('Total Time {:.0f}m {:.0f}s\n'.format(
                 time_elapsed // 60, time_elapsed % 60))
@@ -245,6 +238,3 @@ def weights_init(m):
     if isinstance(m, nn.Conv2d):
         nn.init.kaiming_uniform(m.weight)
         m.bias.data.zero_()
-
-def my_loss(outputs, targets):
-    return (outputs-targets)**2;

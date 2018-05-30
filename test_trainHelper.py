@@ -17,10 +17,10 @@ valid_dt = lfw.Lfw("./datasets/","valid_expr.txt",'/home/guigui/final_proj')
 
 # batch the datasets
 print("Batching the datasets......")
-batch_size = 4
-train_loader = torch.utils.data.DataLoader(train_dt, batch_size=batch_size, shuffle=False)
+batch_size = 32
+train_loader = torch.utils.data.DataLoader(train_dt, batch_size=batch_size, shuffle=True)
 print("Train:%d"%len(train_loader.dataset.imgs))
-valid_loader = torch.utils.data.DataLoader(valid_dt, batch_size=batch_size, shuffle=False)
+valid_loader = torch.utils.data.DataLoader(valid_dt, batch_size=batch_size, shuffle=True)
 print("Valid:%d"%len(valid_loader.dataset.imgs))
 # test_loader = torch.utils.data.DataLoader(test_dt, batch_size=batch_size, shuffle=False)
 # print("Test :%d"%len(test_loader.dataset.imgs))
@@ -37,14 +37,14 @@ torch.manual_seed(0)
 fcn_model = fcn.fcn32s()
 fcn_model.apply(train_utils.weights_init)
 
-optimizer = optim.RMSprop(fcn_model.parameters(), lr=LR, weight_decay=1e-4)
+optimizer = optim.RMSprop(fcn_model.parameters(), lr=LR)
 criterion = nn.MSELoss()
-train_helper = train_utils.trainHelper(fcn_model, optimizer, criterion, n_epochs=8)
+train_helper = train_utils.trainHelper(fcn_model, optimizer, criterion,LR_DECAY= LR_DECAY, n_epochs=10)
 
 print(fcn_model.parameters())
 
-train_helper.FullExpr(train_loader, valid_loader, lfw, if_classes=True)
+train_helper.FullExpr(train_loader, valid_loader, train_dt, if_classes=True, n_classes=3)
 
 # Test ThiNet.
-fcn_thinnet = ThiNet(fcn_model)
-fcn_thinnet.thinmodel(train_dt)
+# fcn_thinnet = ThiNet(fcn_model)
+# fcn_thinnet.thinmodel(train_dt)
