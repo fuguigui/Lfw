@@ -24,7 +24,7 @@ class trainHelper(object):
         self.test_losses=[]
         self.test_eachclass_err=[]
         self.test_best=0
-        self.time_stick = time.strftime('%y-%m-%d-%H',time.localtime(time.time()))
+        self.time_stick = time.strftime('%m-%d-%H-%M',time.localtime(time.time()))
 
     def getmodel(self):
         return self.model
@@ -235,6 +235,7 @@ class trainHelper(object):
 
             ### Adjust Lr ###
             self.adjust_learning_rate()
+        print('Writing results in txt file...')
         self.save_record(if_classes, n_classes)
 
     def save_record(self, if_class=False, n_classes=0):
@@ -243,23 +244,37 @@ class trainHelper(object):
             os.mkdir(path)
         name = os.path.join(path,self.time_stick+'_records.txt')
         f = open(name, 'w')
-        trn_len = len(self.trn_losses)
-        print('# Train result:\n')
-        for i in range(trn_len):
-            f.write('#Rec:',i,', loss:',self.trn_losses[i],', error:',self.trn_errors[i])
-            if(if_class):
-                f.write('n_classes error: ')
-                for j in range(n_classes):
-                    f.write('class ',j,': error',self.trn_eachclass_err[i][j])
+        f.write('# Train result:\nLosses:\n')
+        f.write(str(self.trn_losses))
+        f.write('\nErrors:\n')
+        f.write(str(self.trn_errors))
+        f.write('\nN_classes Accuracy:\n')
+        f.write(str(self.trn_eachclass_err))
 
-        test_len = len(self.test_losses)
-        print('# Test result:\n')
-        for i in range(test_len):
-            f.write('#Rec:', i, ', loss:', self.test_losses[i], ', error:', self.test_errors[i])
-            if (if_class):
-                f.write('n_classes error: ')
-                for j in range(n_classes):
-                    f.write('class ', j, ': error', self.test_eachclass_err[i][j])
+        f.write('\n# Test result:\nLosses:\n')
+        f.write(str(self.test_losses))
+        f.write('\nErrors:\n')
+        f.write(str(self.test_errors))
+        f.write('\nN_classes Accuracy:\n')
+        f.write(str(self.test_eachclass_err))
+
+
+
+        # for i in range(trn_len):
+        #     f.write('#Rec:',i,', loss:',self.trn_losses[i],', error:',self.trn_errors[i])
+        #     if(if_class):
+        #         f.write('n_classes error: ')
+        #         for j in range(n_classes):
+        #             f.write('class ',j,': error',self.trn_eachclass_err[i][j])
+        #
+        # test_len = len(self.test_losses)
+        # print('# Test result:\n')
+        # for i in range(test_len):
+        #     f.write('#Rec:', i, ', loss:', self.test_losses[i], ', error:', self.test_errors[i])
+        #     if (if_class):
+        #         f.write('n_classes error: ')
+        #         for j in range(n_classes):
+        #             f.write('class ', j, ': error', self.test_eachclass_err[i][j])
         f.close()
 
 def weights_init(m):

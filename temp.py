@@ -288,11 +288,8 @@ from torch.autograd import Variable
 
 train_dt = lfw.Lfw("./datasets/","train_expr.txt",'/home/guigui/final_proj')
 
-aim = np.zeros((70,70,3))
-for i in range(15):
-    aim[0][i][0]=255
 img, lbl = train_dt[2]
-m.imsave('./results/img.ppm',img)
+#m.imsave('./results/img.ppm',img)
 train_dt.save_output('./results/',2,lbl)
 
 # ---------------Test: os.path.join
