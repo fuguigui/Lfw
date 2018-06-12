@@ -1,7 +1,6 @@
 import os
 import shutil
 import time
-import json
 
 import torch
 import torch.nn as nn
@@ -23,7 +22,7 @@ class trainHelper(object):
         self.test_errors=[]
         self.test_losses=[]
         self.test_eachclass_err=[]
-        self.test_best=0
+        self.test_best=-1
         self.time_stick = time.strftime('%m-%d-%H-%M',time.localtime(time.time()))
 
     def getmodel(self):
@@ -159,13 +158,16 @@ class trainHelper(object):
 
 
     def checkAndSave(self,output, dataset):
-        if (self.test_best>0):
+        if (self.test_best>-1):
             if self.test_errors[-1] < self.test_errors[self.test_best] \
                     and self.test_losses[-1] < self.test_losses[self.test_best]:
                 idx = len(self.test_errors)-1
                 self.test_best = idx
                 self.save_weights()
                 self.save_results(output, dataset)
+        else:
+            self.test_best = 0
+
 
     def save_weights(self,path=''):
         print("Saving weights...")
@@ -217,6 +219,8 @@ class trainHelper(object):
     def FullExpr(self, train_loader, valid_loader, dt, if_classes=False, n_classes=0):
         for epoch in range(1, self.n_epoch + 1):
             since = time.time()
+
+            print("In train_Helper - FullExpr: Traing Epoch: ",epoch)
 
             ### Train ###
             output = self.train(train_loader, if_each_acc=if_classes, n_classes=n_classes)

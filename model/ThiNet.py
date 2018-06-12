@@ -48,7 +48,7 @@ class ThiNet(object):
             local_crit = nn.MSELoss()
         self.trainHelper = train_utils.trainHelper(self.model, local_optim,local_crit, n_epochs=n_epoch)
 
-    def thinmodel(self, train_dt, batch = 30):
+    def thinmodel(self, train_dt, batch = 20):
         train_loader = torch.utils.data.DataLoader(train_dt, batch_size=batch, shuffle=False)
 
         print("Thinning the model...")
