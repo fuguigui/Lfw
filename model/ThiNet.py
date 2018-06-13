@@ -20,8 +20,8 @@ class ThiNet(object):
         self.time_str = time.strftime('%y-%m-%d-%H',time.localtime(time.time()))
 
 
-    def prune_layer(self, new_in_num, cur, next,middle_layers, next_input):
-        extra_filters = self.filter_selection(next.in_channels, next_input)
+    def prune_layer(self, cur, next,middle_layers, cur_input, next_output):
+        extra_filters = self.filter_selection(cur, middle_layers,next,cur_input, next_output)
         new_out_num, cur_pruned_layer,next_pruned_layer = self.drop_filter(cur, next, new_in_num, extra_filters)
         return new_out_num, cur_pruned_layer,next_pruned_layer
 
@@ -48,7 +48,7 @@ class ThiNet(object):
             local_crit = nn.MSELoss()
         self.trainHelper = train_utils.trainHelper(self.model, local_optim,local_crit, n_epochs=n_epoch)
 
-    def thinmodel(self, train_dt, batch = 20):
+    def thinmodel(self, train_dt, batch = 8):
         train_loader = torch.utils.data.DataLoader(train_dt, batch_size=batch, shuffle=False)
 
         print("Thinning the model...")
@@ -64,7 +64,6 @@ class ThiNet(object):
         conv_layers=self.layerToPrune()
 
         # prune each_layer and save the models.
-        new_in = 0
         for i in range(len(conv_layers)-1):
             pre=conv_layers[i]
             next = conv_layers[i+1]
@@ -83,14 +82,19 @@ class ThiNet(object):
                 if idx == id_input:
                     input = Variable(data[0])
                     break
-            next_input = input
 
-            for j in range(next):
-                next_input = all_layers[j][2](next_input)
+            pre_input = input
+            for j in range(pre):
+                pre_input = all_layers[j][2](pre_input)
 
-            new_in, new_cur_layer, new_next_layer = \
-                self.prune_layer(new_in, all_layers[pre][2], all_layers[next][2],
-                                 middle_layers,next_input)
+            next_output = pre_input
+            for j in range(pre, next+1):
+                next_output = all_layers[j][2](next_output)
+
+
+            new_cur_layer, new_next_layer = \
+                self.prune_layer(all_layers[pre][2], all_layers[next][2],
+                                 middle_layers, pre_input, next_output)
             time_elapsed = time.time() - since
             print('Pruning Time {:.0f}m {:.0f}s'.format(
                 time_elapsed // 60, time_elapsed % 60))
@@ -120,18 +124,24 @@ class ThiNet(object):
 
 
 
-    def filter_selection(self, channel_num, input):
+    def filter_selection(self, cur_layer, next_layer, middle_layers, cur_input, next_output):
         print("In prune_layers: filter_selection...")
+        channel_num = cur_layer.out_channels
         since = time.time()
+
         T = []
         I = list(range(channel_num))
         while len(T) < channel_num * self.compress_rate:
-            print('len of T is {:d}'.format(len(T)))
             min_value = 0
             min_id = -1
-            sum, sub_sum_list = CalculSqX(input, T)
             for i in I:
-                new_sum = CalculSqX(input,0,sub_sum_list,new_channel=i,old_sum=sum)
+                cur_output = cur_layer(cur_input)
+                # set the channels in T and i as zero.
+                temp_input = self.ChannelRemove(cur_output, T, i)
+                for layer in middle_layers:
+                    temp_input = layer(temp_input)
+                temp_output = next_layer(temp_input)
+                new_sum = CalculSqX(next_output, temp_output)
                 if(min_value==0):
                     min_value = new_sum
                     min_id = 0
@@ -148,8 +158,18 @@ class ThiNet(object):
             time_elapsed // 60, time_elapsed % 60))
         return T
 
+    def ChannelRemove(self, arrays, set, element):
+        value = arrays
+        if(isinstance(arrays, Variable)):
+            value = arrays.data.numpy()
+        value[:,element]=0
+        for ele in set:
+            value[:,ele] = 0
+        tensor_value = torch.from_numpy(value)
+        return Variable(tensor_value)
+
     def drop_filter(self, cur, next,cur_in_num, extra_filters):
-        print('In prune_layer: drop_filters:')
+        print('In prune_layer: drop_filters:',extra_filters)
         cur_out_num = cur.out_channels
         if(cur_in_num == 0):
             cur_in_num = cur.in_channels
@@ -210,23 +230,15 @@ class ThiNet(object):
         return self.model
 
 
-def CalculSqX(inputs, id_list, sub_sum_list=0, new_channel = -1, old_sum=0.0):
-    sum = old_sum
+def CalculSqX(inputs, new_inputs):
     if(isinstance(inputs, Variable)):
         inputs = inputs.data.numpy()
+        new_inputs = new_inputs.data.numpy()
     n, c, h, w = inputs.shape
-    if(new_channel!=-1):
-        sub_sum=[0]*n
-        for i in range(n):
-            sub_sum[i] = sub_sum_list[i]
-            sub_sum[i] += np.sum(inputs[i][new_channel])
-            sum+=sub_sum[i]**2
-        return sum
-    else:
-        sub_sum_list=[0]*n
-        for i in range(n):
-            for j in range(c):
-                if j in id_list:
-                    sub_sum_list[i] += np.sum(inputs[i][j])
-            sum += sub_sum_list[i]**2
-        return sum, sub_sum_list
+    sub_sum_list = [0] * n
+    sum = 0
+    for i in range(n):
+        for j in range(c):
+            sub_sum_list[i] += np.sum(inputs[i][j]-new_inputs[i][j])
+        sum += sub_sum_list[i] ** 2
+    return sum, sub_sum_list

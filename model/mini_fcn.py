@@ -145,7 +145,7 @@ class fcn8s(nn.Module):
         self.n_classes = n_classes
 
         self.conv_block1 = nn.Sequential(
-            nn.Conv2d(3, 64, 3, padding=100),
+            nn.Conv2d(3, 64, 3, padding=1),
             nn.ReLU(inplace=True),
             nn.Conv2d(64, 64, 3, padding=1),
             nn.ReLU(inplace=True),
@@ -177,20 +177,18 @@ class fcn8s(nn.Module):
             nn.MaxPool2d(2, stride=2, ceil_mode=True),
         )
         self.classifier = nn.Sequential(
-            nn.Conv2d(512, 1024, 7),
+            nn.Conv2d(512, 1024, 3,padding=1),
             nn.ReLU(inplace=True),
             nn.Dropout2d(),
-            nn.Conv2d(1024, 1024, 1),
+            nn.Conv2d(1024, 1024, 3,padding=1),
             nn.ReLU(inplace=True),
             nn.Dropout2d(),
-            nn.Conv2d(1024, self.n_classes, 1),
+            nn.Conv2d(1024, self.n_classes,kernel_size=3,padding=1),
         )
 
         self.score_pool3 = nn.Conv2d(256, self.n_classes, 1)
         self.score_pool2 = nn.Conv2d(128, self.n_classes, 1)
 
-        if self.learned_bilinear:
-            raise NotImplementedError
 
     def forward(self, x):
         conv1 = self.conv_block1(x)

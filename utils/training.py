@@ -177,6 +177,10 @@ class trainHelper(object):
         mpath = path+self.time_stick
 
         weights_fname = 'weights-%d-%.3f-%.3f.pth' % (self.test_best, loss, err)
+
+        weights_fpath = os.path.join(self.WEIGHTS_PATH, mpath)
+        if not os.path.exists(weights_fpath):
+            os.mkdir(weights_fpath)
         weights_fpath = os.path.join(self.WEIGHTS_PATH,mpath, weights_fname)
         torch.save({
             'startEpoch': self.test_best,
@@ -194,6 +198,10 @@ class trainHelper(object):
         mpath = savepath+self.time_stick
 
         results_folder = 'results-%d-%.3f-%.3f' % (self.test_best, loss, err)
+        results_fpath = os.path.join(self.RESULTS_PATH, mpath)
+        if not os.path.exists(results_fpath):
+            os.mkdir(results_fpath)
+
         results_fpath = os.path.join(self.RESULTS_PATH, mpath, results_folder)
         print('The saving path is ',results_fpath)
         for idx, item in enumerate(output):

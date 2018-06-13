@@ -1,6 +1,6 @@
 from model import fcn
 import utils.training as train_utils
-from model.ThiNet import ThiNet
+import model.ThiNet as thin
 import torch.nn as nn
 from collections import OrderedDict
 from PIL import Image
@@ -116,9 +116,9 @@ from torch.autograd import Variable
 #             T.append(min_id)
 #             I.remove(min_id)
 #     return T
-# n,c,h,w = inputs.shape
-# reduced_T = filter_selection(c, inputs)
-# print("Reduced result:",reduced_T)
+n,c,h,w = inputs.shape
+reduced_T = filter_selection(c, inputs)
+print("Reduced result:",reduced_T)
 #
 
 # -----------------Test: ThiNet.drop_filter(cur, extra_filters):
@@ -286,11 +286,11 @@ from torch.autograd import Variable
 
 # -----------------Test: lfw
 
-train_dt = lfw.Lfw("./datasets/","train_expr.txt",'/home/guigui/final_proj')
-
-img, lbl = train_dt[2]
-#m.imsave('./results/img.ppm',img)
-train_dt.save_output('./results/',2,lbl)
+# train_dt = lfw.Lfw("./datasets/","train_expr.txt",'/home/guigui/final_proj')
+#
+# img, lbl = train_dt[2]
+# #m.imsave('./results/img.ppm',img)
+# train_dt.save_output('./results/',2,lbl)
 
 # ---------------Test: os.path.join
 
@@ -304,3 +304,18 @@ train_dt.save_output('./results/',2,lbl)
 #
 # results_path2 = os.path.join(RESULTS_PATH_2, savepath2, results_fpath)
 # print('The saving path is ', results_path2)
+
+# ----------------Test:range
+# for i in range(4):
+#     print(i)
+# print("Two ends:")
+# for j in range(4,10):
+#     print(j)
+
+# ----------------Test: ThiNet.CalculSqx
+# before = np.zeros((3,4,5,5))
+# after = np.zeros((3,4,5,5))
+# after[:,0]=1
+# sqsum = thin.CalculSqX(before, after)
+# print(after)
+# print(sqsum)
