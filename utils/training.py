@@ -27,6 +27,8 @@ class trainHelper(object):
 
     def getmodel(self):
         return self.model
+    def setOptimizer(self, new_optim):
+        self.optimizer = new_optim
 
     def train(self, trn_loader, if_each_acc=False, n_classes=0):
         self.model.train()
@@ -172,20 +174,15 @@ class trainHelper(object):
     def save_weights(self,path=''):
         print("Saving weights...")
 
-        loss = self.test_losses[self.test_best]
-        err = self.test_errors[self.test_best]
         mpath = path+self.time_stick
 
-        weights_fname = 'weights-%d-%.3f-%.3f.pth' % (self.test_best, loss, err)
+        weights_fname = 'weights-%d.pth' % (self.test_best)
 
         weights_fpath = os.path.join(self.WEIGHTS_PATH, mpath)
         if not os.path.exists(weights_fpath):
-            os.mkdir(weights_fpath)
+            os.makedirs(weights_fpath)
         weights_fpath = os.path.join(self.WEIGHTS_PATH,mpath, weights_fname)
         torch.save({
-            'startEpoch': self.test_best,
-            'loss': loss,
-            'error': err,
             'state_dict': self.model.state_dict()
         }, weights_fpath)
         shutil.copyfile(weights_fpath, self.WEIGHTS_PATH + 'latest.th')
@@ -193,14 +190,12 @@ class trainHelper(object):
     def save_results(self, output,dt, savepath=''):
         print("Saving results...")
 
-        loss = self.test_losses[self.test_best]
-        err = self.test_errors[self.test_best]
         mpath = savepath+self.time_stick
 
-        results_folder = 'results-%d-%.3f-%.3f' % (self.test_best, loss, err)
+        results_folder = 'results-%d' % (self.test_best)
         results_fpath = os.path.join(self.RESULTS_PATH, mpath)
         if not os.path.exists(results_fpath):
-            os.mkdir(results_fpath)
+            os.makedirs(results_fpath)
 
         results_fpath = os.path.join(self.RESULTS_PATH, mpath, results_folder)
         print('The saving path is ',results_fpath)
@@ -212,10 +207,7 @@ class trainHelper(object):
     def load_weights(self, fpath):
         print("loading weights '{}'".format(fpath))
         weights = torch.load(fpath)
-        startEpoch = weights['startEpoch']
         self.model.load_state_dict(weights['state_dict'])
-        print("loaded weights (lastEpoch {}, loss {}, error {})"
-              .format(startEpoch - 1, weights['loss'], weights['error']))
 
     def adjust_learning_rate(self):
         """Sets the learning rate to the initially

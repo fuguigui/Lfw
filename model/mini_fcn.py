@@ -130,9 +130,9 @@ class fcn16s(nn.Module):
         score = self.classifier(conv4)
         score_pool3 = self.score_pool3(conv3)
 
-        score = F.upsample_bilinear(score, score_pool3.size()[2:])
+        score = F.upsample(score, score_pool3.size()[2:])
         score = score + score_pool3
-        out = F.upsample_bilinear(score, x.size()[2:])
+        out = F.upsample(score, x.size()[2:])
 
         return out
 
@@ -200,10 +200,10 @@ class fcn8s(nn.Module):
         score_pool3 = self.score_pool3(conv3)
         score_pool2 = self.score_pool2(conv2)
 
-        score = F.upsample_bilinear(score, score_pool3.size()[2:])
+        score = F.upsample(score, score_pool3.size()[2:])
         score = score + score_pool3
-        score = F.upsample_bilinear(score, score_pool2.size()[2:])
+        score = F.upsample(score, score_pool2.size()[2:])
         score = score + score_pool2
-        out = F.upsample_bilinear(score, x.size()[2:])
+        out = F.upsample(score, x.size()[2:])
 
         return out

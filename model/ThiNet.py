@@ -17,13 +17,15 @@ class ThiNet(object):
         else:
             self.model = pretrained_model
             self.model_name = "Direct model"
+        self.backed_model = self.model
+        self.filter_time_rec=[]
         self.time_str = time.strftime('%y-%m-%d-%H',time.localtime(time.time()))
 
 
     def prune_layer(self, cur, next,middle_layers, cur_input, next_output):
-        extra_filters = self.filter_selection(cur, middle_layers,next,cur_input, next_output)
-        new_out_num, cur_pruned_layer,next_pruned_layer = self.drop_filter(cur, next, new_in_num, extra_filters)
-        return new_out_num, cur_pruned_layer,next_pruned_layer
+        extra_filters = self.filter_selection(cur,next, middle_layers,cur_input, next_output)
+        cur_pruned_layer,next_pruned_layer = self.drop_filter(cur, next, extra_filters)
+        return cur_pruned_layer,next_pruned_layer
 
 
     def layerToPrune(self):
@@ -65,13 +67,13 @@ class ThiNet(object):
 
         # prune each_layer and save the models.
         for i in range(len(conv_layers)-1):
+            self.model = self.backed_model
             pre=conv_layers[i]
             next = conv_layers[i+1]
             middle_num = next-pre-1
-            if(middle_num>0):
-                middle_layers = all_layers[pre+1:pre+middle_num]
-            else:
-                middle_layers=[]
+            middle_layers=[]
+            for num in range(middle_num):
+                middle_layers.append(all_layers[pre+1+num][2])
 
             print("Pruning the layer:", pre," The next layer: ",next)
             since = time.time()
@@ -107,7 +109,6 @@ class ThiNet(object):
 
             self.model._modules[cur_module_name]._modules[cur_layer_name] = new_cur_layer
             self.model._modules[next_module_name]._modules[next_layer_name] = new_next_layer
-            all_layers[next][2] = new_next_layer
 
             print('Finetuning the model...')
             output = self.trainHelper.train(train_loader, if_each_acc=True, n_classes=3)
@@ -121,6 +122,7 @@ class ThiNet(object):
 
             self.trainHelper.save_weights(path=save_file)
             self.trainHelper.save_results(output,train_dt,savepath=save_file)
+        self.trainHelper.save_record(if_class=True,n_classes=3)
 
 
 
@@ -128,10 +130,21 @@ class ThiNet(object):
         print("In prune_layers: filter_selection...")
         channel_num = cur_layer.out_channels
         since = time.time()
+        self.filter_time_rec.append(since)
+
+        print("The length of middle_layers is ",len(middle_layers))
 
         T = []
         I = list(range(channel_num))
+        filter_since = since
         while len(T) < channel_num * self.compress_rate:
+            print("Current to-be-dropped filter is",T)
+            time_elapsed = time.time() - filter_since
+            print('Filter Time {:.0f}m {:.0f}s'.format(
+                time_elapsed // 60, time_elapsed % 60))
+            self.filter_time_rec.append(time_elapsed)
+            filter_since = time.time()
+
             min_value = 0
             min_id = -1
             for i in I:
@@ -168,11 +181,10 @@ class ThiNet(object):
         tensor_value = torch.from_numpy(value)
         return Variable(tensor_value)
 
-    def drop_filter(self, cur, next,cur_in_num, extra_filters):
+    def drop_filter(self, cur, next, extra_filters):
         print('In prune_layer: drop_filters:',extra_filters)
         cur_out_num = cur.out_channels
-        if(cur_in_num == 0):
-            cur_in_num = cur.in_channels
+        cur_in_num = cur.in_channels
         cur_kernel = cur.kernel_size
         cur_pad = cur.padding
 
@@ -204,6 +216,8 @@ class ThiNet(object):
         next_pad = next.padding
 
         new_in = next_in_num - len(extra_filters)
+        print("cur_out_num: ",cur_new_out)
+        print("next_new_in: ",new_in)
         next_new_layer = nn.Conv2d(new_in, next_out_num, next_kernel, padding=next_pad)
         next_new_dict = next_new_layer.state_dict()
         next_pretrained_dict = next.state_dict()
@@ -224,7 +238,7 @@ class ThiNet(object):
         next_new_dict.update(next_modified_dict)
         next_new_layer.load_state_dict(next_new_dict)
 
-        return cur_new_out, cur_new_layer, next_new_layer
+        return cur_new_layer, next_new_layer
 
     def get_model(self):
         return self.model
