@@ -1,103 +1,57 @@
-import os
 import torch
 import torch.utils.data as data
 import numpy as np
-from PIL import Image
-from torchvision.datasets.folder import is_image_file, default_loader
+import scipy.misc as m
+from torchvision.datasets.folder import is_image_file
 from torchvision import utils
 import matplotlib.pyplot as plt
-import torchvision.transforms as transforms
+
+def m_loader(path):
+    img = m.imread(path)
+    return np.array(img,dtype=np.uint8)
+
+def transform(img, lbl):
+    img = img[:, :, ::-1]
+    img = img.astype(float) / 255.0
+    img = img.transpose(2, 0, 1)
+    img = torch.from_numpy(img).float()
+
+    lbl = lbl.astype(float) / 255.0
+    lbl = lbl.transpose(2, 0, 1)
+    lbl = torch.from_numpy(lbl).float()
+    return img, lbl
 
 
-classes = ['skin','background','hair']
-
-class_weight = torch.FloatTensor([
-    0.58872014284134, 0.51052379608154, 2.6966278553009,
-    0.45021694898605, 1.1785038709641, 0.77028578519821, 2.4782588481903,
-    2.5273461341858, 1.0122526884079, 3.2375309467316, 4.1312313079834, 0])
-
-mean = [0.41189489566336, 0.4251328133025, 0.4326707089857]
-std = [0.27413549931506, 0.28506257482912, 0.28284674400252]
-
-class_color = [
-    (128, 128, 128),
-    (128, 0, 0),
-    (192, 192, 128),
-    (128, 64, 128),
-    (0, 0, 192),
-    (128, 128, 0),
-    (192, 128, 128),
-    (64, 64, 128),
-    (64, 0, 128),
-    (64, 64, 0),
-    (0, 128, 192),
-    (0, 0, 0),
-]
-
-def my_loader(path):
-    return Image.open(path).convert('RGB')
-
-def _make_dataset(root,txt):
+def _make_dataset(root,txt,dir):
     images = []
     labels = []
     f = open(root+txt)
     for line in f.readlines():
         img, label = line.rstrip().split('\t')
-        img = img.replace('..','/home/guigui/final_proj')
-        label = label.replace('..','/home/guigui/final_proj')
+        img = img.replace('..',dir)
+        label = label.replace('..',dir)
         if is_image_file(img):
             images.append(img)
         if is_image_file(label):
             labels.append(label)
     return images, labels
 
-
-class LabelToLongTensor(object):
-    def __call__(self, pic):
-        if isinstance(pic, np.ndarray):
-            # handle numpy array
-            label = torch.from_numpy(pic).long()
-        else:
-            label = torch.ByteTensor(torch.ByteStorage.from_buffer(pic.tobytes()))
-            label = label.view(pic.size[1], pic.size[0], 1)
-            label = label.transpose(0, 1).transpose(0, 2).squeeze().contiguous().long()
-        return label
-
-
-class LabelTensorToPILImage(object):
-    def __call__(self, label):
-        label = label.unsqueeze(0)
-        colored_label = torch.zeros(3, label.size(1), label.size(2)).byte()
-        for i, color in enumerate(class_color):
-            mask = label.eq(i)
-            for j in range(3):
-                colored_label[j].masked_fill_(mask, color[j])
-        npimg = colored_label.numpy()
-        npimg = np.transpose(npimg, (1, 2, 0))
-        mode = None
-        if npimg.shape[2] == 1:
-            npimg = npimg[:, :, 0]
-            mode = "L"
-
-        return Image.fromarray(npimg, mode=mode)
-
-
 class Lfw(data.Dataset):
 
-    def __init__(self, dir,txt, transform=None, target_transform=None,
-                 loader=default_loader):
+    def __init__(self, root,txt, dir,transform = transform,
+                 loader=m_loader, n_classes = 3):
         self.type = type
-        self.transform = transform
-        self.target_transform = target_transform
+        self.n_classes = n_classes
         self.loader = loader
-        self.imgs, self.labs = _make_dataset(dir,txt)
+        self.imgs, self.labs = _make_dataset(root,txt,dir)
+        self.height = 250
+        self.weight = 250
+        self.transform = transform
 
     def __getitem__(self, index):
         img = self.loader(self.imgs[index])
         lab = self.loader(self.labs[index])
-        if self.transform is not None:
-            img = self.transform(img)
-            lab = self.transform(lab)
+        img, lab = self.transform(img, lab)
         return img, lab
 
     def __len__(self):
@@ -108,3 +62,4 @@ def show_batch(imgs):
     grid = utils.make_grid(imgs)
     plt.imshow(grid.numpy().transpose((1,2,0)))
     plt.title("Batch from dataloader")
+

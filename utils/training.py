@@ -38,12 +38,9 @@ def load_weights(model, fpath):
           .format(startEpoch-1, weights['loss'], weights['error']))
     return startEpoch
 
-#??? what does this function mean???
 def get_predictions(output_batch):
     bs,c,h,w = output_batch.size()
     tensor = output_batch.data
-    # must use .cpu()?
-    #values, indices = tensor.max(1)
     values, indices = tensor.cpu().max(1)
     indices = indices.view(bs,h,w)
     return indices
@@ -52,12 +49,11 @@ def error(preds, targets):
     assert preds.size() == targets.size()
     bs,h,w = preds.size()
     n_pixels = bs*h*w
-    # incorrect = preds.ne(targets).sum()
     incorrect = preds.ne(targets).cpu().sum()
     err = incorrect/n_pixels
     return round(err,5)
 
-def train(model, trn_loader, optimizer, criterion, epoch):
+def train(model, trn_loader, optimizer, criterion):
     model.train()
     trn_loss = 0
     trn_error = 0
@@ -73,7 +69,8 @@ def train(model, trn_loader, optimizer, criterion, epoch):
 
         trn_loss += loss.data[0]
         pred = get_predictions(output)
-        trn_error += error(pred, targets.data.cpu())
+        right = get_predictions(targets)
+        trn_error += error(pred, right)
 
     trn_loss /= len(trn_loader)
     trn_error /= len(trn_loader)
@@ -90,8 +87,8 @@ def test(model, test_loader, criterion, epoch=1):
         output = model(data)
         test_loss += criterion(output, target).data[0]
         pred = get_predictions(output)
-        # ?????  what is error ? what is get_predictions()?
-        test_error += error(pred, target.data)
+        right = get_predictions(target)
+        test_error += error(pred, right)
     test_loss /= len(test_loader)
     test_error /= len(test_loader)
     return test_loss, test_error
@@ -130,3 +127,6 @@ def view_sample_predictions(model, loader, n):
     for i in range(min(n, batch_size)):
         img_utils.view_image(inputs[i])
         #img_utils.view_annotated(targets[i])
+
+def my_loss(outputs, targets):
+    return (outputs-targets)**2;
