@@ -14,8 +14,8 @@ import torch.nn.functional as F
 
 import utils.lfw as img_utils
 
-RESULTS_PATH = '.results/'
-WEIGHTS_PATH = '.weights/'
+RESULTS_PATH = './results/'
+WEIGHTS_PATH = './weights/'
 
 
 def save_weights(model, epoch, loss, err):
@@ -57,6 +57,10 @@ def train(model, trn_loader, optimizer, criterion):
     model.train()
     trn_loss = 0
     trn_error = 0
+
+    length = len(trn_loader)
+    print("lenght of train loader is ",length)
+
     for idx, data in enumerate(trn_loader):
         inputs = Variable(data[0])
         targets = Variable(data[1])

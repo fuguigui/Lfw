@@ -12,7 +12,7 @@ import utils.training as train_utils
 
 # load the datasets
 print("Loading the data......")
-train_dt = lfw.Lfw("./datasets/","train.txt",'/home/guigui/final_proj')
+train_dt = lfw.Lfw("./datasets/","train_expr.txt",'/home/guigui/final_proj')
 valid_dt = lfw.Lfw("./datasets/","validation.txt",'/home/guigui/final_proj')
 test_dt = lfw.Lfw("./datasets/","test.txt",'/home/guigui/final_proj')
 
@@ -28,13 +28,6 @@ test_loader = torch.utils.data.DataLoader(test_dt, batch_size=batch_size, shuffl
 #print("Test :%d"%len(test_loader.dataset.imgs))
 
 
-for i, (batch_x, batch_y) in enumerate(train_loader):
-    if(i<4):
-        print(i,batch_x.size(), batch_y.size())
-    else:
-        break
-
-
 # Build the nets
 print("Building the nets...")
 LR = 1e-4
@@ -42,9 +35,11 @@ LR_DECAY = 0.995
 DECAY_EVERY_N_EPOCHS = 1
 N_EPOCHS = 2
 torch.manual_seed(0)
+valid_loss_best = 0
+valid_err_best = 0
 
 fcn_model = fcn.fcn32s(n_classes=3)
-#print(fcn_model)
+print(fcn_model)
 fcn_model.apply(train_utils.weights_init)
 # ????? what is model.parameters()?
 print(fcn_model.parameters())
@@ -72,7 +67,14 @@ for epoch in range(1, N_EPOCHS + 1):
         time_elapsed // 60, time_elapsed % 60))
 
     ### Checkpoint ###
-    train_utils.save_weights(fcn_model, epoch, valid_loss, valid_err)
+    if valid_loss_best > 0:
+        if valid_loss < valid_loss_best and valid_err < valid_err_best:
+            valid_loss_best = valid_loss
+            valid_err_best = valid_err
+            train_utils.save_weights(fcn_model, epoch, valid_loss, valid_err)
+    else:
+        valid_loss_best = valid_loss
+        valid_err_best = valid_err
 
     ### Adjust Lr ###
     train_utils.adjust_learning_rate(LR, LR_DECAY, optimizer,

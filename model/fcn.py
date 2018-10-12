@@ -9,7 +9,7 @@ class fcn32s(nn.Module):
         self.n_classes = n_classes
 
         self.conv_block1 = nn.Sequential(
-            nn.Conv2d(3,64,3,padding=100),
+            nn.Conv2d(3,64,3,padding=4),
             nn.ReLU(inplace=True),
             nn.Conv2d(64,64,3,padding=1),
             nn.ReLU(inplace=True),
@@ -50,7 +50,7 @@ class fcn32s(nn.Module):
             nn.MaxPool2d(2, stride=2, ceil_mode=True),
         )
         self.classifier = nn.Sequential(
-            nn.Conv2d(512,4096,7),
+            nn.Conv2d(512,4096,4),
             nn.ReLU(inplace=True),
             nn.Dropout2d(),
             nn.Conv2d(4096,4096,1),
@@ -107,7 +107,7 @@ class fcn16s(nn.Module):
         self.n_classes = n_classes
 
         self.conv_block1 = nn.Sequential(
-            nn.Conv2d(3, 64, 3, padding=100),
+            nn.Conv2d(3, 64, 3, padding=4),
             nn.ReLU(inplace=True),
             nn.Conv2d(64, 64, 3, padding=1),
             nn.ReLU(inplace=True),
@@ -148,7 +148,7 @@ class fcn16s(nn.Module):
             nn.MaxPool2d(2, stride=2, ceil_mode=True),
         )
         self.classifier = nn.Sequential(
-            nn.Conv2d(512, 4096, 7),
+            nn.Conv2d(512, 4096, 4),
             nn.ReLU(inplace=True),
             nn.Dropout2d(),
             nn.Conv2d(4096, 4096, 1),

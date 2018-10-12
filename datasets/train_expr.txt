@@ -1,0 +1,10 @@
+../datasets/lfw_funneled/Inga_Hall/Inga_Hall_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Inga_Hall_0001.ppm
+../datasets/lfw_funneled/Ted_Turner/Ted_Turner_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Ted_Turner_0001.ppm
+../datasets/lfw_funneled/Herb_Sendek/Herb_Sendek_0003.jpg	../datasets/parts_lfw_funneled_gt_images/Herb_Sendek_0003.ppm
+../datasets/lfw_funneled/Ernie_Harwell/Ernie_Harwell_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Ernie_Harwell_0001.ppm
+../datasets/lfw_funneled/Clara_Harris/Clara_Harris_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Clara_Harris_0001.ppm
+../datasets/lfw_funneled/Martin_Scorsese/Martin_Scorsese_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Martin_Scorsese_0001.ppm
+../datasets/lfw_funneled/Steven_Seagal/Steven_Seagal_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Steven_Seagal_0001.ppm
+../datasets/lfw_funneled/Beth_Jones/Beth_Jones_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Beth_Jones_0001.ppm
+../datasets/lfw_funneled/Mariangel_Ruiz_Torrealba/Mariangel_Ruiz_Torrealba_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Mariangel_Ruiz_Torrealba_0001.ppm
+../datasets/lfw_funneled/Jim_Wong/Jim_Wong_0001.jpg	../datasets/parts_lfw_funneled_gt_images/Jim_Wong_0001.ppm
