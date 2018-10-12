@@ -12,6 +12,7 @@ class fcn32s(nn.Module):
         self.conv_block1 = nn.Sequential(
             OrderedDict([
                 ("conv1",nn.Conv2d(3,64,3,padding=4)),
+                # TODO: this padding is to be changed.
                 ("relu1",nn.ReLU(inplace=True)),
                 ("conv2",nn.Conv2d(64,64,3,padding=1)),
                 ("relu2",nn.ReLU(inplace=True)),
@@ -60,10 +61,10 @@ class fcn32s(nn.Module):
             OrderedDict([
                 ("conv1", nn.Conv2d(512,4096,4, padding=1)),
                 ("relu1", nn.ReLU(inplace=True)),
-                ("drop1", nn.Dropout2d()),
+                ("drop1", nn.Dropout2d(inplace=True)),
                 ("conv2", nn.Conv2d(4096,4096, 1, padding=1)),
                 ("relu2", nn.ReLU(inplace=True)),
-                ("drop2", nn.Dropout2d()),
+                ("drop2", nn.Dropout2d(inplace=True)),
                 ("conv3", nn.Conv2d(4096,self.n_classes,1))]))
 
     def forward(self,x):
