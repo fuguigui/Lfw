@@ -4,6 +4,9 @@ import torch.utils.data as data
 import numpy as np
 from PIL import Image
 from torchvision.datasets.folder import is_image_file, default_loader
+from torchvision import utils
+import matplotlib.pyplot as plt
+import torchvision.transforms as transforms
 
 
 classes = ['skin','background','hair']
@@ -31,17 +34,22 @@ class_color = [
     (0, 0, 0),
 ]
 
+def my_loader(path):
+    return Image.open(path).convert('RGB')
 
-def _make_dataset(dir, type):
+def _make_dataset(root,txt):
     images = []
-    assert type in ('train', 'test', 'validation')
-    for root, _, fnames in sorted(os.walk(dir)):
-        for fname in fnames:
-            if is_image_file(fname):
-                path = os.path.join(root, fname)
-                item = path
-                images.append(item)
-    return images
+    labels = []
+    f = open(root+txt)
+    for line in f.readlines():
+        img, label = line.rstrip().split('\t')
+        img = img.replace('..','/home/guigui/final_proj')
+        label = label.replace('..','/home/guigui/final_proj')
+        if is_image_file(img):
+            images.append(img)
+        if is_image_file(label):
+            labels.append(label)
+    return images, labels
 
 
 class LabelToLongTensor(object):
@@ -76,46 +84,27 @@ class LabelTensorToPILImage(object):
 
 class Lfw(data.Dataset):
 
-    def __init__(self, root, split,target, type, joint_transform=None,
-                 transform=None, target_transform=LabelToLongTensor(),
+    def __init__(self, dir,txt, transform=None, target_transform=None,
                  loader=default_loader):
-        self.root = root
-        self.split = split
         self.type = type
-        self.target = target
         self.transform = transform
         self.target_transform = target_transform
-        self.joint_transform = joint_transform
         self.loader = loader
-        self.class_weight = class_weight
-        self.classes = classes
-        self.mean = mean
-        self.std = std
-        self.imgs = _make_dataset(os.path.join(self.root, self.split), self.type)
+        self.imgs, self.labs = _make_dataset(dir,txt)
 
     def __getitem__(self, index):
-        path = self.imgs[index]
-        img = self.loader(path)
-        if self.type == 'test':
-            return img
-        head, tail= os.path.split(path)
-        ind = head.index(self.split)
-        head = head[0:ind]
-        head = head + self.target
-        tail.replace(".jpg",".ppm")
-        path = os.path.join(head,tail)
-        target = Image.open(path)
-
-        if self.joint_transform is not None:
-            img, target = self.joint_transform([img, target])
-
+        img = self.loader(self.imgs[index])
+        lab = self.loader(self.labs[index])
         if self.transform is not None:
             img = self.transform(img)
-
-        target = self.target_transform(target)
-        return img, target
+            lab = self.transform(lab)
+        return img, lab
 
     def __len__(self):
         return len(self.imgs)
 
-raise NotImplementedError
+
+def show_batch(imgs):
+    grid = utils.make_grid(imgs)
+    plt.imshow(grid.numpy().transpose((1,2,0)))
+    plt.title("Batch from dataloader")

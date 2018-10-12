@@ -17,10 +17,9 @@ def GeneImgTxt(typestr):
         file = folder+'_'+str_num
         # print('the string number is '+str_num)
 
-        fname = folder.replace('_',' ')
         # print('the raw file is ',folder,
               #'\n the folder name is ',fname)
-        dpath = '../datasets/lfw_funneled/'+fname+'/'+file+'.jpg'
+        dpath = '../datasets/lfw_funneled/'+folder+'/'+file+'.jpg'
         rpath = '../datasets/parts_lfw_funneled_gt_images/'+file+'.ppm'
         out.write(dpath+'\t'+rpath+'\n')
     out.close()
